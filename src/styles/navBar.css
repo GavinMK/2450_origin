@@ -1,0 +1,52 @@
+.nav-button {
+    -fx-min-width: 1.5em;
+    -fx-min-height: 2.6em;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-font-family: Calibri;
+    -fx-text-fill: #C0C0C0;
+    -fx-font-size: 3em;
+}
+
+.page-button {
+    -fx-padding: 8px 40px 4px 10px;
+}
+
+.nav-button:hover {
+    -fx-text-fill: white;
+}
+
+.active-page-button {
+    -fx-text-fill: white;
+    -fx-padding: 8px 40px 4px 10px;
+}
+
+.forward-button {
+    -fx-padding: 7px 5px 4px 5px;
+    -fx-graphic: url("/assets/forward_unfocused.png");
+}
+
+.forward-button:hover {
+    -fx-graphic: url("/assets/forward_focused.png");
+}
+
+.forward-button:disabled {
+    -fx-graphic: url("/assets/forward_disabled.png");
+}
+
+.back-button {
+    -fx-padding: 7px 5px 4px 5px;
+    -fx-graphic: url("/assets/back_unfocused.png");
+}
+
+.back-button:hover {
+    -fx-graphic: url("/assets/back_focused.png");
+}
+
+.back-button:disabled {
+    -fx-graphic: url("/assets/back_disabled.png");
+}
+
+.nav-bar {
+    -fx-background-color: linear-gradient(from 50% 0% to 50% 15%, #000000, #1E262C);
+}
