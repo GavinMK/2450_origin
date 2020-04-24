@@ -1,0 +1,72 @@
+.toolbar-button {
+    -fx-min-width: 1.5em;
+    -fx-min-height: 2.6em;
+    -fx-border-color: transparent;
+    -fx-background-color: black;
+}
+
+.toolbar-button:hover {
+    -fx-background-color: #22313C;
+}
+
+.maximize-button {
+    -fx-graphic: url("/assets/maximize.png");
+}
+
+.window-button {
+    -fx-graphic: url("/assets/windowed.png");
+}
+
+.minimize-button {
+    -fx-graphic: url("/assets/minimize.png");
+}
+
+.exit-button {
+     -fx-graphic: url("/assets/close.png");
+}
+
+.menu-bar {
+    -fx-fit-to-width: true;
+    -fx-background-color: black;
+    -fx-border-color: transparent;
+    -fx-text-fill: white;
+}
+
+.menu {
+    -fx-background-color: black;
+    -fx-border-color: transparent;
+    -fx-text-fill: white;
+}
+
+.menu:hover {
+    -fx-background-color: #22313C;
+}
+
+/* sets menu & menuItem text color to light theme */
+.menu .label {
+    -fx-text-fill: lightgray;
+    -fx-font-family: Calibri;
+    -fx-font-size: 1.5em;
+}
+
+.menu .label:hover {
+    -fx-text-fill: white !important;
+}
+
+.menu-item {
+    -fx-background-color: black;
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+}
+
+.menu-item:hover {
+    -fx-background-color: #22313C;
+}
+
+.context-menu {
+    -fx-background-color: black;
+}
+
+.toolbar {
+    -fx-background-color: black;
+}
