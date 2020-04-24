@@ -54,7 +54,7 @@ public class RouteState {
                 return true;
             }
             if ((currentState.get(entry.getKey()) == null && entry.getValue() != null) ||
-                    (!currentState.get(entry.getKey()).equals(entry.getValue()))) {
+                    (currentState.get(entry.getKey()) != null && !currentState.get(entry.getKey()).equals(entry.getValue()))) {
                 return true;
             }
         }
