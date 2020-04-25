@@ -21,20 +21,13 @@ public class Store extends VBox {
     private HorizontalGameList sales;
     private HorizontalGameList mostPopular;
 
-    public Store() {
-        super();
-        Text text = new Text("Store");
-        text.setFill(Color.WHITE);
-        this.getChildren().add(text);
-
     public Store(RouteState routeState) {
         super();
         this.getStylesheets().addAll("/styles/store.css");
         try {
             File gamesFile = new File("src/assets/games.csv");
             masterGameCollection = new GameCollection(gamesFile);
-            GameCollection gameCollection = new GameCollection(gamesFile);
-            this.mostPopular = new HorizontalGameList(gameCollection.sortDescendingPopular());
+            this.mostPopular = new HorizontalGameList(masterGameCollection.sortDescendingPopular());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
