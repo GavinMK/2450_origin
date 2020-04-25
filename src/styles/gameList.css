@@ -1,0 +1,39 @@
+.game-box {
+    -fx-min-width: 231px;
+    -fx-min-height: 326px;
+}
+
+.title {
+    -fx-font-family: Calibri;
+    -fx-text-fill: white;
+    -fx-font-size: 1.5em;
+}
+.scroll-button {
+    -fx-min-width: 50px;
+    -fx-min-height: 326px;
+    -fx-background-color: transparent;
+}
+
+.left-button {
+    -fx-graphic: url("/assets/left_chev_unfocused.png");
+}
+
+.left-button:hover {
+    -fx-graphic: url("/assets/left_chev_focused.png");
+}
+
+.left-button:disabled {
+    -fx-graphic: url("/assets/left_chev_disabled.png");
+}
+
+.right-button {
+    -fx-graphic: url("/assets/right_chev_unfocused.png");
+}
+
+.right-button:hover {
+    -fx-graphic: url("/assets/right_chev_focused.png");
+}
+
+.right-button:disabled {
+    -fx-graphic: url("/assets/right_chev_disabled.png");
+}
