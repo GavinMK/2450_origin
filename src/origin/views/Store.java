@@ -8,9 +8,14 @@ import origin.model.GameCollection;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Collections;
 
 //TODO: This whole thing
 public class Store extends VBox {
+
+    private HorizontalGameList sales;
+    private HorizontalGameList mostPopular;
+
     public Store() {
         super();
         Text text = new Text("Store");
@@ -21,10 +26,12 @@ public class Store extends VBox {
         System.out.println("PATH: " + gamesFile.getAbsolutePath());
         try {
             GameCollection gameCollection = new GameCollection(gamesFile);
+            this.mostPopular = new HorizontalGameList(gameCollection.sortDescendingPopular());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        this.getChildren().add(mostPopular);
     }
 }
