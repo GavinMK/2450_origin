@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import origin.model.GameData;
+import origin.utils.GuiHelper;
 
 /**
  * Tall game box. Shows image of the game with small description box.
@@ -34,15 +35,13 @@ public class TallGame extends StackPane {
     }
 
     private void expandInfo() {
-        this.gameInfo.getStyleClass().remove("minimized-info");
-        this.gameInfo.getStyleClass().add("expanded-info");
+        GuiHelper.SwapClasses(this.gameInfo, "minimized-info", "expanded-info");
         this.description.setVisible(true);
         this.chips.setVisible(true);
     }
 
     private void shrinkInfo() {
-        this.gameInfo.getStyleClass().remove("expanded-info");
-        this.gameInfo.getStyleClass().add("minimized-info");
+        GuiHelper.SwapClasses(this.gameInfo, "expanded-info", "minimized-info");
         this.description.setVisible(false);
         this.chips.setVisible(false);
     }
@@ -51,7 +50,7 @@ public class TallGame extends StackPane {
         Button button = new Button();
         button.getStyleClass().add("game-button");
         button.setOnAction((evt) -> {
-
+            //TODO navigate to game's page
         });
         button.setOnMouseEntered((evt) -> {
             this.expandInfo();

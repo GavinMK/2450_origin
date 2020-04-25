@@ -119,8 +119,7 @@ public class GameCollection {
     }
 
     public List<GameData> sortDescendingPopular() {
-        List<GameData> sortedGames = new ArrayList<>(games);
-        sortedGames.sort(Comparator.comparingInt(g -> g.numSales));
+        List<GameData> sortedGames = this.sortAscendingPopular();
         Collections.reverse(sortedGames);
         return sortedGames;
     }
