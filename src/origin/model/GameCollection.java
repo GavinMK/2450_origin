@@ -73,6 +73,7 @@ public class GameCollection {
         for (ArrayList<String> row: csvData) {
             games.add(parseGameFromList(row));
         }
+        System.out.println("Loaded: " + games.size() + " games");
     }
 
     public GameCollection(List<GameData> games) {
