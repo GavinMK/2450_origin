@@ -44,6 +44,7 @@
 
 /* sets menu & menuItem text color to light theme */
 .menu .label {
+    -fx-padding: 3px 0px 3px 0px;
     -fx-text-fill: lightgray;
     -fx-font-family: Calibri;
     -fx-font-size: 1.5em;
@@ -68,5 +69,13 @@
 }
 
 .toolbar {
+    -fx-background-color: black;
+}
+
+.logo-button {
+    -fx-graphic: url("/assets/origin.png");
+    -fx-min-width: 1.5em;
+    -fx-min-height: 1.5em;
+    -fx-border-color: transparent;
     -fx-background-color: black;
 }

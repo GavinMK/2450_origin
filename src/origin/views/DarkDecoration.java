@@ -15,6 +15,7 @@ import java.util.ArrayList;
     so we just implement the whole frame ourselves...
  */
 public class DarkDecoration extends HBox {
+    private Button logoButton;
     private MenuBar menuBar;
     private Button exitButton;
     private Button maximizeButton;
@@ -54,6 +55,12 @@ public class DarkDecoration extends HBox {
             add("Redeem A Code");
         }}));
     }};
+
+    private Button createLogoButton() {
+        Button button = new Button();
+        button.getStyleClass().add("logo-button");
+        return button;
+    }
 
     //Create Menu UI elements from MENU_BAR_CONTENT
     private MenuBar createMenuBar() {
@@ -129,13 +136,13 @@ public class DarkDecoration extends HBox {
         super();
         this.getStylesheets().add("/styles/darkToolbar.css");
         this.getStyleClass().add("toolbar");
-
+        logoButton = createLogoButton();
         menuBar = createMenuBar();
         minimizeButton = createMinimizeButton();
         maximizeButton = createMaximizeButton();
         exitButton = createExitButton();
         leftBox = new HBox();
-        leftBox.getChildren().addAll(menuBar);
+        leftBox.getChildren().addAll(logoButton, menuBar);
         rightBox = new HBox();
         rightBox.getChildren().addAll(minimizeButton, maximizeButton, exitButton);
         rightBox.setAlignment(Pos.CENTER_RIGHT);
