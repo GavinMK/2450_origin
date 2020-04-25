@@ -87,7 +87,7 @@ public class AppRoot extends Application {
         });
 
         primaryStage.initStyle(StageStyle.UNDECORATED);
-        primaryStage.setScene(new Scene(borderPane, 1000, 950));
+        primaryStage.setScene(new Scene(borderPane, 1100, 950));
 
         primaryStage.show();
     }

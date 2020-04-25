@@ -1,0 +1,46 @@
+.game-info {
+    -fx-max-width: 231px;
+    -fx-min-width: 231px;
+    -fx-font-family: Calibri;
+}
+.minimized-info {
+    -fx-max-height: 9em;
+    -fx-min-height: 9em;
+}
+
+.expanded-info {
+    -fx-max-height: 18em;
+    -fx-min-height: 18em;
+}
+
+.game-title {
+    -fx-text-fill: white;
+    -fx-font-size: 1.5em;
+    -fx-padding: 20px 0px 0px 10px;
+}
+
+.game-desc {
+    -fx-text-fill: #C0C0C0;
+    -fx-font-size: .8em;
+    -fx-padding: 10px 10px 0px 20px;
+}
+
+.game-chips {
+    -fx-text-fill: white;
+    -fx-font-size: 1em;
+    -fx-padding: 10px 10px 0px 20px;
+
+}
+
+.game-button {
+    -fx-max-heigth: 326px;
+    -fx-min-height: 326px;
+    -fx-max-width: 231px;
+    -fx-min-width: 231px;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.root {
+    box-color: black;
+}

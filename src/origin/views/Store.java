@@ -11,12 +11,21 @@ import origin.utils.RouteState;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Collections;
 
 //TODO: This whole thing
 public class Store extends VBox {
     private GameCollection masterGameCollection;
     private HBox searchHBox;
     private Search searchBar;
+    private HorizontalGameList sales;
+    private HorizontalGameList mostPopular;
+
+    public Store() {
+        super();
+        Text text = new Text("Store");
+        text.setFill(Color.WHITE);
+        this.getChildren().add(text);
 
     public Store(RouteState routeState) {
         super();
@@ -24,6 +33,8 @@ public class Store extends VBox {
         try {
             File gamesFile = new File("src/assets/games.csv");
             masterGameCollection = new GameCollection(gamesFile);
+            GameCollection gameCollection = new GameCollection(gamesFile);
+            this.mostPopular = new HorizontalGameList(gameCollection.sortDescendingPopular());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -35,5 +46,6 @@ public class Store extends VBox {
         searchHBox.setAlignment(Pos.CENTER_RIGHT);
         searchHBox.getChildren().add(searchBar);
         this.getChildren().addAll(searchHBox);
+        this.getChildren().add(mostPopular);
     }
 }
