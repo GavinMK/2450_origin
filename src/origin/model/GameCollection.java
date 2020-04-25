@@ -83,7 +83,7 @@ public class GameCollection {
     public GameCollection getTitlesContainingString(String str) {
         ArrayList<GameData> matchingGames = new ArrayList<>();
         for (GameData game: games) {
-            if (game.title.contains(str)) {
+            if (game.title.toLowerCase().contains(str.toLowerCase())) {
                 matchingGames.add(game);
             }
         }

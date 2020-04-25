@@ -1,0 +1,5 @@
+.search-h-box {
+    -fx-padding: 7px 7px 7px 0px;
+    -fx-border-color: #303030 transparent #484848 transparent;
+    -fx-border-width: 1;
+}
