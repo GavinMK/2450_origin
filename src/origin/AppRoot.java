@@ -53,7 +53,6 @@ public class AppRoot extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        System.out.println("CENTER LEFT: " + Pos.CENTER_LEFT);
         //Set application to initial state
         routeState = new RouteState(new ArrayList<>() {{
             add(new Pair<>("page", "Store"));

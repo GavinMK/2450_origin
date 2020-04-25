@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+/*
+    DropDown list of checkboxes (if multi-select) or buttons (if single-select)
+ */
 public class DropDownList extends VBox {
     private SelectionMode selectionMode;
     private Polygon dropTriangle;
@@ -20,8 +23,8 @@ public class DropDownList extends VBox {
     private static final double DROP_TRIANGLE_W = 22.0;
     private static final double DROP_TRIANGLE_X_OFF = 40.0;
     private static final double DROP_TRIANGLE_Y_OFF = 5.0;
-    //private HashSet<String> selectedItems = new HashSet<>();
 
+    //Triangle between field and the dropDown box
     public Polygon createDropTriangle() {
         Polygon polygon = new Polygon();
         polygon.getPoints().addAll(DROP_TRIANGLE_W / 2.0, 0.0);
@@ -33,6 +36,7 @@ public class DropDownList extends VBox {
         return polygon;
     }
 
+    //Button for each item in the dropDown
      public Button createItemButton(String item) {
         Button button = new Button(item);
         button.getStyleClass().add("item-button");
@@ -45,6 +49,7 @@ public class DropDownList extends VBox {
         return button;
      }
 
+     //A button representing extra functionality in the list (clearly divided from items)
     public void setExtra(String item) {
         if (item != null) {
             extraButton = createItemButton(item);
@@ -73,10 +78,12 @@ public class DropDownList extends VBox {
         this.getChildren().addAll(itemBox, dropTriangle);
     }
 
+    //Listens to changes in selected items
     public void setChangeListener(Consumer<List<String>> changeListener) {
         this.changeListener = changeListener;
     }
 
+    //Set the items shown in the dropbox
     public void setItems(List<String> items) {
         itemBox.getChildren().clear();
         for (String item: items) {
