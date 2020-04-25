@@ -1,0 +1,51 @@
+.search-box {
+    -fx-border-color: transparent;
+    -fx-background-radius: 7px;
+    -fx-background-color: #252525;
+    -fx-border-radius: 7px;
+    -fx-padding: 1px 0px 1px 0px;
+}
+
+.focused-box {
+    -fx-border-color: white;
+}
+
+.search-icon {
+    -fx-min-width: 1.5em;
+    -fx-min-height: 1.75em;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-graphic: url("/assets/search_unfocused.png");
+    -fx-padding: 6px -2px 4px 4px;
+}
+
+.search-icon:hover {
+    -fx-graphic: url("/assets/search_focused.png");
+    -fx-cursor: HAND;
+}
+
+.search-icon:disabled {
+    -fx-graphic: url("/assets/search_disabled.png");
+}
+
+.search-field {
+    -fx-text-fill: white;
+    -fx-font-size: 1.75em;
+    -fx-font-family: Calibri;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.clear-icon {
+    -fx-min-width: 1.5em;
+    -fx-min-height: 1.75em;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-graphic: url("/assets/close_unfocused.png");
+    -fx-padding: 7px 5px 4px 4px;
+}
+
+.clear-icon:hover {
+    -fx-graphic: url("/assets/close_focused.png");
+    -fx-cursor: HAND;
+}

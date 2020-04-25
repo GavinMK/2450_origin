@@ -1,6 +1,7 @@
 package origin;
 
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
@@ -29,14 +30,16 @@ public class AppRoot extends Application {
     public static final String ACCESS_PAGE_NAME = "Access";
     public static final String PROFILE_PAGE_NAME = "Profile";
     public static final String GAME_PAGE_NAME = "Game";
+    public static final String SEARCH_PAGE_NAME = "Search";
 
     private HashMap<String, Node> createPages() {
         return new HashMap<>() {{
-            put(STORE_PAGE_NAME, new Store());
+            put(STORE_PAGE_NAME, new Store(routeState));
             put(LIBRARY_PAGE_NAME, new Library());
             put(ACCESS_PAGE_NAME, new Access());
             put(PROFILE_PAGE_NAME, new Profile());
             put(GAME_PAGE_NAME, new GamePage());
+            put(SEARCH_PAGE_NAME, new SearchPage());
         }};
     }
 
@@ -50,6 +53,7 @@ public class AppRoot extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        System.out.println("CENTER LEFT: " + Pos.CENTER_LEFT);
         //Set application to initial state
         routeState = new RouteState(new ArrayList<>() {{
             add(new Pair<>("page", "Store"));

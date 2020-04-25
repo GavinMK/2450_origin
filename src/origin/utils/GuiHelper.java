@@ -13,4 +13,18 @@ public class GuiHelper {
             node.getStyleClass().add(addClass);
         }
     }
+
+    //Detects if parentNode is an ancestor of node
+    public static boolean IsChild(Node parentNode, Node node) {
+        if (node == null) {
+            return true;
+        }
+        while (node != null) {
+            if (node == parentNode) {
+                return true;
+            }
+            node = node.getParent();
+        }
+        return false;
+    }
 }
