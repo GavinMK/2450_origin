@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
 import origin.AppRoot;
@@ -24,20 +25,19 @@ import java.util.ArrayList;
 public class WideGame extends HBox {
     private GameData game;
     private ImageView gameImage;
-    private GridPane infoPane;
-    private Text title;
-    private Text price;
-    private Text description;
+    private HBox gameInfo;
+    private Label title;
+    private Label price;
     private RouteState routeState;
 
     private ImageView createGameImage() {
         try {
             BufferedImage img = ImageIO.read(new File("src" + game.horzImgUri));
             System.out.println("CROPPING: " + game.horzImgUri);
-            ImageView imageView = new ImageView(SwingFXUtils.toFXImage(img.getSubimage(750, 0, 500, 500), null));
+            ImageView imageView = new ImageView(SwingFXUtils.toFXImage(img.getSubimage(450, 0, 1100, 500), null));
             imageView.getStyleClass().add("game-image");
             imageView.setPreserveRatio(true);
-            imageView.setFitHeight(75);
+            imageView.setFitHeight(120);
             return imageView;
         } catch (IOException e) {
             System.out.println("Failed to crop: " + game.horzImgUri);
@@ -45,24 +45,36 @@ public class WideGame extends HBox {
         return null;
     }
 
-    private Text createGameTitle() {
-        Text text = new Text(game.title);
+    private Label createGameTitle() {
+        Label text = new Label(game.title);
         text.getStyleClass().add("game-title");
         return text;
     }
 
-    private Text createGamePrice() {
+    private Label createGamePrice() {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
         String priceStr = formatter.format(game.price);
-        Text text = new Text(priceStr);
+        Label text = new Label(priceStr);
         text.getStyleClass().add("game-price");
         return text;
     }
 
-    private Text createGameDescription() {
-        Text text = new Text(game.description);
+    private Label createGameDescription() {
+        Label text = new Label(game.description);
         text.getStyleClass().add("game-description");
         return text;
+    }
+
+    private Label createRating() {
+        Label rating = new Label("★★★★★");
+        rating.getStyleClass().add("game-rating");
+        return rating;
+    }
+
+    private Label createOwned() {
+        Label owned = new Label("Owned");
+        owned.getStyleClass().add("game-owned");
+        return owned;
     }
 
     private Button createButton() {
@@ -75,14 +87,19 @@ public class WideGame extends HBox {
     public void initInfoPane() {
         title = createGameTitle();
         price = createGamePrice();
-        description = createGameDescription();
-        infoPane = new GridPane();
-        infoPane.getStyleClass().add("info-pane");
-        infoPane.add(title, 0, 0);
-        infoPane.add(price, 0, 1);
-        infoPane.add(description, 1, 0);
-        infoPane.setHgap(10);
-        infoPane.setVgap(10);
+        gameImage = createGameImage();
+        Label rating = this.createRating();
+        VBox infoBox = new VBox(0);
+        infoBox.getChildren().addAll(title, rating);
+        System.out.println(game.owned);
+        if (game.owned) {
+            infoBox.getChildren().add(this.createOwned());
+        }
+        else infoBox.getChildren().add(price);
+        infoBox.getStyleClass().add("info-box");
+        gameInfo = new HBox();
+        gameInfo.getStyleClass().add("game-info");
+        gameInfo.getChildren().addAll(gameImage, infoBox);
     }
 
     public WideGame(GameData game, RouteState routeState) {
@@ -92,7 +109,6 @@ public class WideGame extends HBox {
 
         this.getStylesheets().add("/styles/wideGame.css");
         this.getStyleClass().add("wide-game");
-        gameImage = createGameImage();
         initInfoPane();
 
         this.setOnMouseClicked((evt) -> {
@@ -102,6 +118,6 @@ public class WideGame extends HBox {
             }});
         });
 
-        this.getChildren().addAll(gameImage, infoPane);
+        this.getChildren().addAll(this.gameInfo);
     }
 }

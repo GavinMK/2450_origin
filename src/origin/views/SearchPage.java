@@ -20,6 +20,7 @@ public class SearchPage extends BorderPane {
 
     private Button storeButton;
     private Search searchBar;
+    private VBox listArea;
     private VerticalGameList verticalGameList;
     private HBox searchHBox;
     private HBox topHBox;
@@ -55,6 +56,8 @@ public class SearchPage extends BorderPane {
 
         this.getStylesheets().add("/styles/searchPage.css");
 
+        listArea = new VBox();
+        listArea.getStyleClass().add("list-area");
         storeButton = createStoreButton();
         searchBar = new Search(masterCollection, routeState);
         searchHBox = new HBox();
@@ -87,8 +90,10 @@ public class SearchPage extends BorderPane {
         sortHBox.getChildren().addAll(sortButton, filterButton);
         sortHBox.setAlignment(Pos.CENTER_LEFT);
         verticalGameList = new VerticalGameList(routeState);
+        listArea.getChildren().add(verticalGameList);
         gameScrollPane = new ScrollPane();
-        gameScrollPane.setContent(verticalGameList);
+        gameScrollPane.setContent(listArea);
+        gameScrollPane.setFitToWidth(true);
         gamePane = new BorderPane();
         gamePane.setCenter(gameScrollPane);
         gamePane.setTop(sortHBox);

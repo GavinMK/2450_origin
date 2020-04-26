@@ -15,6 +15,8 @@ public class VerticalGameList extends VBox {
     public VerticalGameList(RouteState routeState) {
         super();
         this.routeState = routeState;
+        this.getStyleClass().add("/styles/vert-gameList.css");
+        this.setSpacing(15);
     }
 
     public void setGames(List<GameData> games) {

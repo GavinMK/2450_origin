@@ -34,3 +34,41 @@
 .sort-box {
     -fx-padding: 0px 0px 0px 12px;
 }
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .increment-button {
+    visibility: hidden;
+}
+
+.scroll-bar .decrement-button {
+    visibility: hidden;
+}
+
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .track-background {
+    visibility: hidden;
+}
+
+.scroll-bar:vertical .track {
+    visibility: hidden;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: black;
+}
+
+.list-area {
+    -fx-padding: 10px 120px 30px 30px;
+}
