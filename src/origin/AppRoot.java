@@ -1,9 +1,9 @@
 package origin;
 
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -36,7 +36,7 @@ public class AppRoot extends Application {
     public static final String PROFILE_PAGE_NAME = "Profile";
     public static final String GAME_PAGE_NAME = "Game";
     public static final String SEARCH_PAGE_NAME = "Search";
-    public static final int UI_WIDTH = 1100;
+    public static final int UI_WIDTH = 1125;
     public static final int UI_HEIGHT = 950;
 
     private HashMap<String, Node> createPages() {
