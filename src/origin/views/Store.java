@@ -1,6 +1,7 @@
 package origin.views;
 
 import javafx.geometry.Pos;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -14,30 +15,32 @@ import java.text.ParseException;
 import java.util.Collections;
 
 //TODO: This whole thing
-public class Store extends VBox {
-    private GameCollection masterGameCollection;
+public class Store extends BorderPane {
+    private GameCollection masterCollection;
+    private RouteState routeState;
     private HBox searchHBox;
+    private VBox body;
     private Search searchBar;
     private HorizontalGameList sales;
     private HorizontalGameList mostPopular;
 
-    public Store(RouteState routeState) {
+    public Store(GameCollection masterCollection, RouteState routeState) {
         super();
+        this.masterCollection = masterCollection;
+        this.routeState = routeState;
+
         this.getStylesheets().addAll("/styles/store.css");
-        try {
-            File gamesFile = new File("src/assets/games.csv");
-            masterGameCollection = new GameCollection(gamesFile);
-            this.mostPopular = new HorizontalGameList(masterGameCollection.sortDescendingPopular(), routeState);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        searchBar = new Search(masterGameCollection, routeState);
+        searchBar = new Search(masterCollection, routeState);
         searchHBox = new HBox();
         searchHBox.getStyleClass().add("search-h-box");
         searchHBox.setAlignment(Pos.CENTER_RIGHT);
         searchHBox.getChildren().add(searchBar);
-        this.getChildren().addAll(searchHBox, mostPopular);
+
+        mostPopular = new HorizontalGameList(masterCollection.sortDescendingPopular(), routeState);
+        body = new VBox();
+        body.getChildren().addAll(mostPopular);
+        //BorderPane is used to set visibility order while maintaining positioning: make sure you set center first, then top
+        this.setCenter(body);
+        this.setTop(searchHBox);
     }
 }

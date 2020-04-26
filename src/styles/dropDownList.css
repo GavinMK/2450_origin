@@ -15,6 +15,23 @@
     -fx-alignment: CENTER_LEFT;
 }
 
+.item-check-box {
+    -fx-background-color: #2B2B2B;
+    -fx-border-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-family: Calibri;
+    -fx-font-size: 1.5em;
+    -fx-padding: 3px 3px 5px 10px;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.item-check-box:hover {
+    -fx-underline: true;
+    -fx-cursor: HAND;
+}
+
 .item-button:hover {
     -fx-underline: true;
     -fx-cursor: HAND;
@@ -23,4 +40,18 @@
 .extra-button {
     -fx-padding: 3px 3px 5px 10px;
     -fx-border-color: #636363 transparent transparent transparent;
+}
+
+.check-box .box {
+    -fx-background-color: #020202;
+    -fx-border-color: black;
+    -fx-border-radius:3px;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: white;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #020202;
 }
