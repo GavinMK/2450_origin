@@ -49,4 +49,5 @@
 
 .nav-bar {
     -fx-background-color: linear-gradient(from 50% 0% to 50% 15%, #000000, #1E262C);
+    -fx-min-height: 65px;
 }

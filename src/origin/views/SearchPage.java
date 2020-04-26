@@ -1,11 +1,10 @@
 package origin.views;
 
-import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
 import origin.AppRoot;
@@ -21,7 +20,7 @@ public class SearchPage extends BorderPane {
 
     private Button storeButton;
     private Search searchBar;
-    private GameScroller gameScroller;
+    private VerticalGameList verticalGameList;
     private HBox searchHBox;
     private HBox topHBox;
     private Text titleText;
@@ -29,6 +28,7 @@ public class SearchPage extends BorderPane {
     private HBox sortHBox;
     private BorderPane gamePane;
     private VBox body;
+    private ScrollPane gameScrollPane;
     private DropDownButton sortButton;
     private DropDownButton filterButton;
 
@@ -86,9 +86,11 @@ public class SearchPage extends BorderPane {
         sortHBox.getStyleClass().add("sort-box");
         sortHBox.getChildren().addAll(sortButton, filterButton);
         sortHBox.setAlignment(Pos.CENTER_LEFT);
-        gameScroller = new GameScroller(routeState);
+        verticalGameList = new VerticalGameList(routeState);
+        gameScrollPane = new ScrollPane();
+        gameScrollPane.setContent(verticalGameList);
         gamePane = new BorderPane();
-        gamePane.setCenter(gameScroller);
+        gamePane.setCenter(gameScrollPane);
         gamePane.setTop(sortHBox);
         body = new VBox();
         body.getChildren().addAll(titleHBox, gamePane);
@@ -102,6 +104,7 @@ public class SearchPage extends BorderPane {
                     return;
                 }
                 searchCollection = (GameCollection)state.get("gameCollection");
+                verticalGameList.setGames(searchCollection.games);
                 if (!state.containsKey("search")) {
                     System.err.println("SearchPage: Missing search in routeState");
                     return;
