@@ -3,3 +3,94 @@
     -fx-border-color: #303030 transparent #484848 transparent;
     -fx-border-width: 1;
 }
+
+.list-title {
+    -fx-font-family: Calibri;
+    -fx-text-fill: white;
+    -fx-font-size: 1.3em;
+    -fx-padding: 5px 0px 0px 60px;
+}
+
+.list-text{
+    -fx-font-family: Calibri;
+    -fx-text-fill: white;
+    -fx-font-size: 1.3em;
+    -fx-padding: 5px 0px 0px 0px;
+}
+
+.regular-region {
+    -fx-min-width: 800px;
+}
+
+.sale-region {
+    -fx-min-width: 570px;
+}
+
+.orange {
+    -fx-text-fill: rgb(246, 108, 29);
+}
+
+.show-button {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-font-family: Calibri;
+    -fx-text-fill: rgb(246, 108, 29);
+    -fx-font-size: 1.3em;
+}
+
+.sales-button {
+    -fx-border-color: rgb(246, 108, 29);
+    -fx-border-radius: 5px;
+    -fx-text-fill: rgb(246, 108, 29);
+    -fx-font-family: Calibri;
+    -fx-font-size: 1.5em;
+    -fx-background-color: transparent;
+}
+
+.sale-info {
+    -fx-min-height: 38px;
+    -fx-background-color: black;
+}
+
+.sale-list {
+    -fx-border-color: transparent transparent #484848 transparent;
+    -fx-background-color: black;
+}
+
+.sale-controls {
+    -fx-padding: 10px 0px 0px 0px;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .increment-button {
+    visibility: hidden;
+}
+
+.scroll-bar .decrement-button {
+    visibility: hidden;
+}
+
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .track-background {
+    visibility: hidden;
+}
+
+.scroll-bar:vertical .track {
+    visibility: hidden;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: black;
+}
