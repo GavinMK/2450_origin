@@ -4,6 +4,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import origin.model.GameData;
+import origin.utils.RouteState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class HorizontalGameList extends HBox {
     private ArrayList<TallGame> gameBoxes;
     private Button leftButton;
     private Button rightButton;
+    private RouteState routeState;
 
     //TODO some way to calculate this based on width of the window??
     private int boxCount;
@@ -25,7 +27,7 @@ public class HorizontalGameList extends HBox {
     private int leftIterator;
 
     private TallGame createTallGame(GameData game) {
-        TallGame gameBox = new TallGame(game);
+        TallGame gameBox = new TallGame(game, this.routeState);
         //TODO link to game page
         return gameBox;
     }
@@ -89,9 +91,10 @@ public class HorizontalGameList extends HBox {
         if(this.rightButton.isDisabled()) this.rightButton.setDisable(false);
     }
 
-    public HorizontalGameList(List<GameData> games) {
+    public HorizontalGameList(List<GameData> games, RouteState routeState) {
         super();
         this.games = games;
+        this.routeState = routeState;
         this.leftIterator = 0;
         this.boxCount = 4;
         this.leftButton = this.createLeftButton();

@@ -31,6 +31,8 @@ public class AppRoot extends Application {
     public static final String PROFILE_PAGE_NAME = "Profile";
     public static final String GAME_PAGE_NAME = "Game";
     public static final String SEARCH_PAGE_NAME = "Search";
+    public static final int UI_WIDTH = 1100;
+    public static final int UI_HEIGHT = 950;
 
     private HashMap<String, Node> createPages() {
         return new HashMap<>() {{
@@ -38,7 +40,7 @@ public class AppRoot extends Application {
             put(LIBRARY_PAGE_NAME, new Library());
             put(ACCESS_PAGE_NAME, new Access());
             put(PROFILE_PAGE_NAME, new Profile());
-            put(GAME_PAGE_NAME, new GamePage());
+            put(GAME_PAGE_NAME, new GamePage(routeState));
             put(SEARCH_PAGE_NAME, new SearchPage());
         }};
     }
@@ -87,7 +89,7 @@ public class AppRoot extends Application {
         });
 
         primaryStage.initStyle(StageStyle.UNDECORATED);
-        primaryStage.setScene(new Scene(borderPane, 1100, 950));
+        primaryStage.setScene(new Scene(borderPane, UI_WIDTH, UI_HEIGHT));
 
         primaryStage.show();
     }

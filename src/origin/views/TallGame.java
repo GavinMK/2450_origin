@@ -7,8 +7,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
+import origin.AppRoot;
 import origin.model.GameData;
 import origin.utils.GuiHelper;
+import origin.utils.RouteState;
+
+import java.util.ArrayList;
 
 /**
  * Tall game box. Shows image of the game with small description box.
@@ -19,6 +24,7 @@ public class TallGame extends StackPane {
     private Button gameButton;
     private Label title;
     private Label description;
+    private RouteState routeState;
 
     //TODO remove this when we actually have chips
     private Label chips;
@@ -50,7 +56,10 @@ public class TallGame extends StackPane {
         Button button = new Button();
         button.getStyleClass().add("game-button");
         button.setOnAction((evt) -> {
-            //TODO navigate to game's page
+            routeState.pushState(new ArrayList<>() {{
+                add(new Pair<>("page", AppRoot.GAME_PAGE_NAME));
+                add(new Pair<>("gameData", game));
+            }});
         });
         button.setOnMouseEntered((evt) -> {
             this.expandInfo();
@@ -61,9 +70,10 @@ public class TallGame extends StackPane {
         return button;
     }
 
-    public TallGame(GameData game) {
+    public TallGame(GameData game, RouteState routeState) {
         super();
         this.game = game;
+        this.routeState = routeState;
         ImageView image = new ImageView(new Image(game.vertImgUri));
 
         this.title = new Label(this.game.title);

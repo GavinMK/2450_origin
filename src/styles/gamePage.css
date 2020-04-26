@@ -1,0 +1,51 @@
+.game-banner {
+    -fx-max-width: 1100px;
+    -fx-min-width: 1100px;
+}
+
+.game-text {
+    -fx-font-family: Calibri;
+    -fx-text-fill: white
+}
+
+.game-title {
+    -fx-font-size: 3em;
+    -fx-font-weight: bold;
+}
+
+.game-price {
+    -fx-font-size: 2em;
+}
+
+.game-desc {
+    -fx-font-size: 1.2em;
+}
+
+.buy-button {
+    -fx-background-color: rgb(246, 108, 29);
+    -fx-max-width: 14em;
+    -fx-min-width: 14em;
+    -fx-max-height: 4em;
+    -fx-min-height: 4em;
+}
+
+.info-box {
+    -fx-max-width: 1100px;
+    -fx-min-width: 1100px;
+    -fx-padding: 10px 0px 10px 10px;
+}
+
+.bottom-box {
+}
+
+.bottom-left-box {
+    -fx-max-width: 850px;
+    -fx-min-width: 850px;
+    -fx-padding: 20px 0px 20px 20px;
+}
+
+.bottom-right-box {
+    -fx-max-width: 200px;
+    -fx-min-width: 200px;
+    -fx-padding: 0px 0px 30px 0px;
+}

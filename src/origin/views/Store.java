@@ -27,7 +27,7 @@ public class Store extends VBox {
         try {
             File gamesFile = new File("src/assets/games.csv");
             masterGameCollection = new GameCollection(gamesFile);
-            this.mostPopular = new HorizontalGameList(masterGameCollection.sortDescendingPopular());
+            this.mostPopular = new HorizontalGameList(masterGameCollection.sortDescendingPopular(), routeState);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -38,7 +38,6 @@ public class Store extends VBox {
         searchHBox.getStyleClass().add("search-h-box");
         searchHBox.setAlignment(Pos.CENTER_RIGHT);
         searchHBox.getChildren().add(searchBar);
-        this.getChildren().addAll(searchHBox);
-        this.getChildren().add(mostPopular);
+        this.getChildren().addAll(searchHBox, mostPopular);
     }
 }
