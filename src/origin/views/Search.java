@@ -26,7 +26,8 @@ import java.util.List;
 public class Search extends VBox {
     private static final int ITEM_LIMIT = 6;
 
-    private GameCollection gameCollection;
+    private GameCollection masterCollection;
+    private GameCollection searchCollection = null;
     private RouteState routeState;
     private HashMap<String, GameData> titlesToGameData = new HashMap<>();
 
@@ -49,13 +50,14 @@ public class Search extends VBox {
             routeState.pushState(new ArrayList<>() {{
                 add(new Pair<>("page", AppRoot.SEARCH_PAGE_NAME));
                 add(new Pair<>("search", searchField.getText()));
-                add(new Pair<>("gameCollection", gameCollection));
+                add(new Pair<>("gameCollection", searchCollection));
             }});
         }
     }
 
     private DropDownList createDropDownList() {
-        DropDownList dropDownList = new DropDownList(SelectionMode.SINGLE);
+        DropDownList dropDownList = new DropDownList(SelectionMode.SINGLE, false);
+        dropDownList.showDropTriangle();
         dropDownList.setManaged(false);
         dropDownList.setChangeListener((List<String> selectedItems) ->  {
             if (selectedItems.size() > 0) {
@@ -137,8 +139,8 @@ public class Search extends VBox {
             clearIcon.setVisible(text.length() > 0);
             if (text.length() > 0) {
                 //Update search results
-                GameCollection searchGameCollection = gameCollection.getTitlesContainingString(text);
-                List<GameData> searchGames = searchGameCollection.sortAlphabetical();
+                searchCollection = masterCollection.getTitlesContainingString(text);
+                List<GameData> searchGames = searchCollection.sortAlphabetical();
                 //# of games titles to display
                 int numItems = (searchGames.size() < ITEM_LIMIT)? searchGames.size(): ITEM_LIMIT;
                 ArrayList<String> titles = new ArrayList<>();  //Array of displayed game titles
@@ -165,7 +167,7 @@ public class Search extends VBox {
                 }
 
                 //Show the dropdown list
-                if (!showingList) {
+                if (!showingList && searchField.isFocused()) {
                     this.getChildren().add(dropDownList);
                     showingList = true;
                 }
@@ -194,21 +196,27 @@ public class Search extends VBox {
         super();
         this.getStylesheets().add("/styles/search.css");
 
-        this.gameCollection = gameCollection;
+        this.masterCollection = gameCollection;
         this.routeState = routeState;
 
         dropDownList = createDropDownList();
         initSearchBox();
 
+        dropDownList.setMinWidth(searchBox.getWidth());
+        dropDownList.setTranslateY(searchBox.getHeight());
         //Set dropDown to width of the search box
         searchBox.widthProperty().addListener((obs, prevW, width) -> {
             dropDownList.setMinWidth(width.doubleValue());
         });
         //Set dropDown to below searchBox (necessary since its position is not managed)
         searchBox.heightProperty().addListener((obs, prevH, height) -> {
-            dropDownList.setTranslateY(searchBox.getHeight());
+            dropDownList.setTranslateY(height.doubleValue());
         });
 
         this.getChildren().addAll(searchBox);
+    }
+
+    public void setSearch(String str) {
+        searchField.setText(str);
     }
 }

@@ -1,0 +1,37 @@
+.game-title {
+    -fx-font-family: Calibri;
+    -fx-font-size: 2.0em;
+    -fx-fill: white;
+}
+
+.game-image {
+    -fx-border-color: #020202;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.info-pane {
+    -fx-padding: 12px 12px 12px 12px;
+}
+
+.game-price {
+    -fx-font-family: Calibri;
+    -fx-font-size: 1.8em;
+    -fx-fill: white;
+    -fx-padding: 12px 12px 12px 12px;
+}
+
+.game-description {
+    -fx-font-family: Calibri;
+    -fx-font-size: 1.4em;
+    -fx-fill: white;
+}
+
+.wide-game {
+    -fx-background-color: #171717;
+}
+
+.wide-game:hover {
+    -fx-background-color: #040404;
+    -fx-border-color: #060606;
+}

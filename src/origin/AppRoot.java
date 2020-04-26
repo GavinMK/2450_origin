@@ -8,9 +8,13 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Pair;
+import origin.model.GameCollection;
 import origin.utils.RouteState;
 import origin.views.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -25,6 +29,7 @@ public class AppRoot extends Application {
     private NavBar navBar;
     private VBox body;
     private BorderPane borderPane;
+    private GameCollection masterCollection;
     public static final String STORE_PAGE_NAME = "Store";
     public static final String LIBRARY_PAGE_NAME = "Library";
     public static final String ACCESS_PAGE_NAME = "Access";
@@ -36,12 +41,12 @@ public class AppRoot extends Application {
 
     private HashMap<String, Node> createPages() {
         return new HashMap<>() {{
-            put(STORE_PAGE_NAME, new Store(routeState));
+            put(STORE_PAGE_NAME, new Store(masterCollection, routeState));
             put(LIBRARY_PAGE_NAME, new Library());
             put(ACCESS_PAGE_NAME, new Access());
             put(PROFILE_PAGE_NAME, new Profile());
             put(GAME_PAGE_NAME, new GamePage(routeState));
-            put(SEARCH_PAGE_NAME, new SearchPage());
+            put(SEARCH_PAGE_NAME, new SearchPage(masterCollection, routeState));
         }};
     }
 
@@ -55,6 +60,14 @@ public class AppRoot extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        try {
+            File gamesFile = new File("src/assets/games.csv");
+            masterCollection = new GameCollection(gamesFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         //Set application to initial state
         routeState = new RouteState(new ArrayList<>() {{
             add(new Pair<>("page", "Store"));

@@ -1,0 +1,36 @@
+.top-box {
+    -fx-padding: 7px 7px 7px 7px;
+    -fx-border-color: #303030 transparent #484848 transparent;
+    -fx-border-width: 1;
+}
+
+.store-button {
+    -fx-padding: 7px 7px 7px 7px;
+    -fx-border-color: lightgray;
+    -fx-background-color: #1E262C;
+    -fx-font-family: Calibri;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-text-fill: white;
+    -fx-font-size: 1.5em;
+    -fx-font-weight: bold;
+}
+
+.store-button:hover {
+    -fx-border-color: white;
+    -fx-background-color: #0F1316;
+}
+
+.title-box {
+    -fx-padding: 7px 7px 7px 12px;
+}
+
+.title-text {
+    -fx-font-family: Calibri;
+    -fx-fill: white;
+    -fx-font-size: 2.3em;
+}
+
+.sort-box {
+    -fx-padding: 0px 0px 0px 12px;
+}

@@ -1,6 +1,7 @@
 package origin.views;
 
 import javafx.geometry.Pos;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -17,16 +18,17 @@ import java.text.ParseException;
 import java.util.List;
 
 //TODO: This whole thing
-public class Store extends VBox {
-    private GameCollection masterGameCollection;
+public class Store extends BorderPane {
+    private GameCollection masterCollection;
+    private RouteState routeState;
     private ScrollPane scroller;
     private VBox allLists;
     private HBox searchHBox;
+    private VBox body;
     private Search searchBar;
     private VBox sales;
     private VBox mostPopular;
     private VBox mostRecent;
-    private RouteState routeState;
 
     private Button createShowButton(String buttonClass, String buttonText) {
         Button showButton = new Button(buttonText);
@@ -85,33 +87,35 @@ public class Store extends VBox {
         return box;
     }
 
-    public Store(RouteState routeState) {
+    public Store(GameCollection masterCollection, RouteState routeState) {
         super();
+        this.masterCollection = masterCollection;
+        this.routeState = routeState;
+
+        this.getStylesheets().addAll("/styles/store.css");
+        searchBar = new Search(masterCollection, routeState);
         this.routeState = routeState;
         this.scroller = new ScrollPane();
         this.allLists = new VBox();
-        this.getStylesheets().addAll("/styles/store.css");
-        try {
-            File gamesFile = new File("src/assets/games.csv");
-            masterGameCollection = new GameCollection(gamesFile);
-            this.sales = createSales("Need 4 Speed", masterGameCollection.sortPrice());
-            this.mostPopular = createGameList("Most Popular", masterGameCollection.sortDescendingPopular());
-            this.mostRecent = createGameList("Most Recent", masterGameCollection.sortRecent());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        searchBar = new Search(masterGameCollection, this.routeState);
+        this.sales = createSales("Need 4 Speed", masterCollection.sortPrice());
+        this.mostPopular = createGameList("Most Popular", masterCollection.sortDescendingPopular());
+        this.mostRecent = createGameList("Most Recent", masterCollection.sortRecent());
+        searchBar = new Search(masterCollection, this.routeState);
         searchHBox = new HBox();
         searchHBox.getStyleClass().add("search-h-box");
         searchHBox.setAlignment(Pos.CENTER_RIGHT);
         searchHBox.getChildren().add(searchBar);
+
         Region placeholder = new Region();
         placeholder.setMinHeight(60);
         this.allLists.getChildren().addAll(this.sales, this.mostPopular, placeholder);
         this.scroller.setContent(this.allLists);
         this.scroller.setFitToWidth(true);
-        this.getChildren().addAll(searchHBox, scroller);
+
+        body = new VBox();
+        body.getChildren().addAll(scroller);
+        //BorderPane is used to set visibility order while maintaining positioning: make sure you set center first, then top
+        this.setCenter(body);
+        this.setTop(searchHBox);
     }
 }
