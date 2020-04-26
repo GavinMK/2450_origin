@@ -8,13 +8,13 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
+import origin.AppRoot;
 import origin.model.GameCollection;
 import origin.model.GameData;
 import origin.utils.RouteState;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 //TODO: This whole thing
@@ -30,11 +30,17 @@ public class Store extends BorderPane {
     private VBox mostPopular;
     private VBox mostRecent;
 
-    private Button createShowButton(String buttonClass, String buttonText) {
+    private Button createShowButton(String buttonClass, String buttonText, String title, GameCollection collection) {
         Button showButton = new Button(buttonText);
         showButton.getStyleClass().add(buttonClass);
         showButton.setOnAction((evt) -> {
-            //TODO navigate to filtered search page
+            //TODO make it so that the title isn't results for X and dont populate the search bar.
+            this.routeState.pushState(new ArrayList<>() {{
+                add(new Pair<>("page", AppRoot.SEARCH_PAGE_NAME));
+                add(new Pair<>("search", title));
+                add(new Pair<>("gameCollection", collection));
+            }});
+
         });
         return showButton;
     }
@@ -47,7 +53,7 @@ public class Store extends BorderPane {
         gameTitle.getStyleClass().add("list-title");
         Region gap = new Region();
         gap.getStyleClass().add("regular-region");
-        Button showButton = this.createShowButton("show-button", "Show All");
+        Button showButton = this.createShowButton("show-button", "Show All", title, new GameCollection(games));
         controls.getChildren().addAll(gameTitle, gap, showButton);
 
         HorizontalGameList list = new HorizontalGameList(games, this.routeState, null);
@@ -77,7 +83,7 @@ public class Store extends BorderPane {
         list.getStyleClass().add("sale-list");
 
         HBox controls = new HBox();
-        Button showButton = createShowButton("sales-button", "See All Sales");
+        Button showButton = createShowButton("sales-button", "See All Sales", title + " Super Sale", new GameCollection(games));
         controls.setAlignment(Pos.CENTER);
         controls.getChildren().add(showButton);
         controls.getStyleClass().add("sale-controls");
@@ -108,7 +114,7 @@ public class Store extends BorderPane {
 
         Region placeholder = new Region();
         placeholder.setMinHeight(60);
-        this.allLists.getChildren().addAll(this.sales, this.mostPopular, placeholder);
+        this.allLists.getChildren().addAll(this.sales, this.mostPopular, this.mostRecent, placeholder);
         this.scroller.setContent(this.allLists);
         this.scroller.setFitToWidth(true);
 
