@@ -28,8 +28,8 @@ public class Store extends VBox {
     private VBox mostRecent;
     private RouteState routeState;
 
-    private Button createShowButton(String buttonClass) {
-        Button showButton = new Button("Show All");
+    private Button createShowButton(String buttonClass, String buttonText) {
+        Button showButton = new Button(buttonText);
         showButton.getStyleClass().add(buttonClass);
         showButton.setOnAction((evt) -> {
             //TODO navigate to filtered search page
@@ -45,7 +45,7 @@ public class Store extends VBox {
         gameTitle.getStyleClass().add("list-title");
         Region gap = new Region();
         gap.getStyleClass().add("regular-region");
-        Button showButton = this.createShowButton("show-button");
+        Button showButton = this.createShowButton("show-button", "Show All");
         controls.getChildren().addAll(gameTitle, gap, showButton);
 
         HorizontalGameList list = new HorizontalGameList(games, this.routeState, null);
@@ -75,7 +75,7 @@ public class Store extends VBox {
         list.getStyleClass().add("sale-list");
 
         HBox controls = new HBox();
-        Button showButton = createShowButton("sales-button");
+        Button showButton = createShowButton("sales-button", "See All Sales");
         controls.setAlignment(Pos.CENTER);
         controls.getChildren().add(showButton);
         controls.getStyleClass().add("sale-controls");
