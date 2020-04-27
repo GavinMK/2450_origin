@@ -13,7 +13,7 @@ import javafx.scene.image.ImageView;
  * Side scrolling list of games.
  */
 public class HorizontalGameList extends HBox {
-
+    private static int MAX_BOX_COUNT = 4;
     private List<GameData> games;
     private ArrayList<TallGame> gameBoxes;
     private Button leftButton;
@@ -91,16 +91,14 @@ public class HorizontalGameList extends HBox {
         this.visibleGames.getChildren().add(3, this.gameBoxes.get(3));
     }
 
-    private HBox createVisibleGames() {
-        HBox box = new HBox();
+    private void populateVisibleGames() {
         for(int i = this.leftIterator; i < this.boxCount; i++){
             if(this.gameBoxes.get(i) != null) {
-                box.getChildren().add(this.gameBoxes.get(i));
+                visibleGames.getChildren().add(this.gameBoxes.get(i));
             }
             else break;
         }
-        box.setSpacing(20);
-        return box;
+        visibleGames.setSpacing(20);
     }
 
     private int getRightIterator() {
@@ -125,7 +123,7 @@ public class HorizontalGameList extends HBox {
         this.routeState = routeState;
         this.specialFrameUri = specialFrameUri;
         this.leftIterator = 0;
-        this.boxCount = 4;
+        this.boxCount = MAX_BOX_COUNT;
         this.leftButton = this.createLeftButton();
         this.rightButton = this.createRightButton();
         this.visibleGames = new HBox();
@@ -136,10 +134,7 @@ public class HorizontalGameList extends HBox {
             this.specialFrame.getStyleClass().add("special-frame");
         }
 
-        for(GameData game: games) {
-            this.gameBoxes.add(this.createTallGame(game));
-        }
-        this.visibleGames = this.createVisibleGames();
+        setGames(games);
 
         this.getStylesheets().add("/styles/gameList.css");
         this.getChildren().addAll(this.leftButton, this.visibleGames, this.rightButton);
@@ -148,4 +143,25 @@ public class HorizontalGameList extends HBox {
         }
     }
 
+    private int getMaxBoxCount() {
+        return (isSpecialFrame)? (MAX_BOX_COUNT / 2): MAX_BOX_COUNT;
+    }
+
+    public void setGames(List<GameData> games) {
+        this.gameBoxes.clear();
+        this.visibleGames.getChildren().clear();
+        this.leftIterator = 0;
+        if (games.size() <= getMaxBoxCount()) {
+            this.leftButton.setVisible(false);
+            this.rightButton.setVisible(false);
+        } else {
+            this.leftButton.setVisible(true);
+            this.rightButton.setVisible(true);
+        }
+        boxCount = (games.size() < getMaxBoxCount())? games.size(): getMaxBoxCount();
+        for(GameData game: games) {
+            this.gameBoxes.add(this.createTallGame(game));
+        }
+        this.populateVisibleGames();
+    }
 }
