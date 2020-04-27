@@ -128,3 +128,7 @@
     -fx-font-weight: bold;
     -fx-text-fill: orange;
 }
+
+.sort-list {
+    -fx-padding: 0px 25px 0px 20px;
+}

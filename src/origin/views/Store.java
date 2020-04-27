@@ -22,7 +22,6 @@ import java.util.function.Function;
 
 //TODO: This whole thing
 public class Store extends BorderPane {
-    public static final String ROUTE_PREFIX = "store";
     private GameCollection masterCollection;
     private RouteState routeState;
     private ScrollPane scroller;
@@ -56,13 +55,15 @@ public class Store extends BorderPane {
         Button showButton = new Button(buttonText);
         showButton.getStyleClass().add(buttonClass);
         showButton.setOnAction((evt) -> {
-            //TODO make it so that the title isn't results for X and dont populate the search bar.
             this.routeState.pushState(new ArrayList<>() {{
                 add(new Pair<>("page", AppRoot.SEARCH_PAGE_NAME));
                 add(new Pair<>("search", title));
                 add(new Pair<>("gameCollection", collection));
+                add(new Pair<>("page", AppRoot.SEARCH_PAGE_NAME));
+                add(new Pair<>("title", title));
+                add(new Pair<>("search", null));
+                add(new Pair<>(AppRoot.SEARCH_PAGE_NAME + "SortBy", FilterBar.MOST_POPULAR));
             }});
-
         });
         return showButton;
     }
@@ -119,7 +120,7 @@ public class Store extends BorderPane {
     }
 
     private void initFilterBar() {
-        filterBar = new FilterBar(masterCollection);
+        filterBar = new FilterBar(masterCollection, false);
         filterBar.setCollectionListener((collection, changedField) -> {
             if (collection.games.isEmpty()) {
                 showNoMatches();
@@ -137,7 +138,7 @@ public class Store extends BorderPane {
                 showSortList();
             }
         });
-        filterBar.linkWithRouteState(ROUTE_PREFIX, routeState);
+        filterBar.linkWithRouteState(AppRoot.STORE_PAGE_NAME, routeState);
     }
 
     private void showNoMatches() {
@@ -185,6 +186,7 @@ public class Store extends BorderPane {
     private void initVertGameBox() {
         vertGameBox = new VBox();
         this.sortedGameList = new VerticalGameList(routeState);
+        sortedGameList.getStyleClass().add("sort-list");
         vertGameBox.getChildren().add(sortedGameList);
     }
 
@@ -242,6 +244,5 @@ public class Store extends BorderPane {
         //BorderPane is used to set visibility order while maintaining positioning: make sure you set center first, then top
         this.setCenter(scroller);
         this.setTop(searchHBox);
-
     }
 }

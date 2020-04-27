@@ -42,7 +42,6 @@ public class FilterBar extends HBox {
     private DropDownButton sortByDropButton;
     private DropDownButton genreDropButton;
     private DropDownButton filterDropButton;
-    private GameCollection activeCollection;
 
     private BiConsumer<GameCollection, String> collectionListener;
     private BiConsumer<List<GameData>, String> listListener;
@@ -103,15 +102,21 @@ public class FilterBar extends HBox {
         }
     }
 
-    public FilterBar(GameCollection gameCollection) {
+    public FilterBar(GameCollection gameCollection, boolean listOnly) {
         super();
-        this.gameCollection = gameCollection;
+        if (gameCollection != null) {
+            this.gameCollection = gameCollection;
+        } else {
+            this.gameCollection = new GameCollection(new ArrayList<>());
+        }
 
         this.getStylesheets().add("/styles/filterBar.css");
         this.getStyleClass().add("filter-bar");
         sortByDropButton = new DropDownButton("Sort By", new ArrayList<>(SORT_BYS.keySet()), SelectionMode.SINGLE);
         sortByDropButton.getStyleClass().addAll("filter-button",  "filter-button-divide");
-        sortByDropButton.setExtra("Clear");
+        if (!listOnly) {
+            sortByDropButton.setExtra("Clear");
+        }
         sortByDropButton.setMinWidth(150.0);
         genreDropButton = new DropDownButton("Genres", GENRES, SelectionMode.MULTIPLE);
         genreDropButton.getStyleClass().addAll("filter-button", "filter-button-divide");
@@ -131,11 +136,11 @@ public class FilterBar extends HBox {
                 if (SORT_BYS.containsKey(item)) {
                     if (!item.equals(sortingBy)) {
                         this.sortingBy = item;
-                        sendGamesToListeners(SORT_BY_FIELD);
+                        pushState(SORT_BY_FIELD);
                     }
                 } else if (sortingBy != null) {
                     this.sortingBy = null;
-                    sendGamesToListeners(SORT_BY_FIELD);
+                    pushState(SORT_BY_FIELD);
                 }
             }
         });
@@ -175,29 +180,27 @@ public class FilterBar extends HBox {
         }
     }
 
-    public void linkWithRouteState(String keyPrefix, RouteState routeState) {
+    public void linkWithRouteState(String pageName, RouteState routeState) {
         this.routeState = routeState;
-        this.routePrefix = keyPrefix;
+        this.routePrefix = pageName;
         routeState.subscribe((state) -> {
-            System.out.println("PUSHING STATE");
-            if (state.get("page") == AppRoot.STORE_PAGE_NAME) {
+            if (state.get("page") == pageName) {
                 disablePush = true;
-                if (state.containsKey(keyPrefix + "SortBy") && state.get(keyPrefix + "SortBy") != null) {
-                    sortingBy = (String)state.get("storeSortBy");
+                if (state.containsKey(routePrefix + "SortBy") && state.get(routePrefix + "SortBy") != null) {
+                    sortingBy = (String)state.get(routePrefix + "SortBy");
                 } else {
                     sortingBy = null;
                 }
-                if (state.containsKey(keyPrefix + "ActiveGenres") && state.get(keyPrefix + "ActiveGenres") != null) {
-                    activeGenres = (List<String>)state.get(keyPrefix + "ActiveGenres");
+                if (state.containsKey(routePrefix + "ActiveGenres") && state.get(routePrefix + "ActiveGenres") != null) {
+                    activeGenres = (List<String>)state.get(routePrefix + "ActiveGenres");
                 } else {
                     activeGenres = null;
                 }
-                if (state.containsKey(keyPrefix + "ActiveFilters") && state.get(keyPrefix + "ActiveFilters") != null) {
-                    activeFilters = (List<String>)state.get(keyPrefix + "ActiveFilters");
+                if (state.containsKey(routePrefix + "ActiveFilters") && state.get(routePrefix + "ActiveFilters") != null) {
+                    activeFilters = (List<String>)state.get(routePrefix + "ActiveFilters");
                 } else {
                     activeFilters = null;
                 }
-                this.setSortBy(sortingBy);
                 this.sortByDropButton.setSelectedItems((sortingBy != null)? new ArrayList<>(){{ add(sortingBy); }}: null);
                 this.genreDropButton.setSelectedItems(activeGenres);
                 this.filterDropButton.setSelectedItems(activeFilters);
@@ -236,5 +239,10 @@ public class FilterBar extends HBox {
         this.activeFilters = filters;
         this.genreDropButton.setSelectedItems(filters);
         pushState(FILTER_FIELD);
+    }
+
+    public void setGameCollection(GameCollection collection) {
+        this.gameCollection = collection;
+        sendGamesToListeners(null);
     }
 }

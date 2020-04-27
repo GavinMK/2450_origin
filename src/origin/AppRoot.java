@@ -56,7 +56,7 @@ public class AppRoot extends Application {
             add(new Pair<>(STORE_PAGE_NAME, () -> {
                 routeState.pushState(new ArrayList<>() {{
                     add(new Pair<>("page", STORE_PAGE_NAME));
-                    addAll(FilterBar.GetClearState(Store.ROUTE_PREFIX));
+                    addAll(FilterBar.GetClearState(AppRoot.STORE_PAGE_NAME));
                 }});
             }));
             add(new Pair<>(LIBRARY_PAGE_NAME, () -> {

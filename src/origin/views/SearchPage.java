@@ -2,6 +2,7 @@ package origin.views;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.*;
@@ -26,12 +27,12 @@ public class SearchPage extends BorderPane {
     private HBox topHBox;
     private Text titleText;
     private HBox titleHBox;
-    private HBox sortHBox;
+    private HBox noMatchesBox;
     private BorderPane gamePane;
     private VBox body;
     private ScrollPane gameScrollPane;
-    private DropDownButton sortButton;
-    private DropDownButton filterButton;
+    private FilterBar filterBar;
+    private boolean showingSortList = true;
 
     private Button createStoreButton() {
         Button button = new Button("Back to Store");
@@ -50,6 +51,51 @@ public class SearchPage extends BorderPane {
         return text;
     }
 
+    public void initFilterBar() {
+        filterBar = new FilterBar(null, true);
+        filterBar.setListListener((games, changedField) -> {
+            if (games.isEmpty()) {
+                showNoMatches();
+            } else {
+                verticalGameList.setGames(games);
+                showSortList();
+            }
+        });
+        filterBar.linkWithRouteState(AppRoot.SEARCH_PAGE_NAME, routeState);
+    }
+
+    private void showNoMatches() {
+        if (showingSortList) {
+            listArea.getChildren().clear();
+            listArea.getChildren().add(noMatchesBox);
+            showingSortList = false;
+        }
+    }
+
+    private void showSortList() {
+        if (!showingSortList) {
+            listArea.getChildren().clear();
+            listArea.getChildren().add(verticalGameList);
+            showingSortList = true;
+        }
+    }
+
+    private void initNoMatchesBox() {
+        noMatchesBox = new HBox();
+        noMatchesBox.setAlignment(Pos.CENTER);
+        noMatchesBox.setMinHeight(300.0);
+        Label noMatchText = new Label("No Matching Games...");
+        noMatchText.getStyleClass().add("no-match-text");
+        Button noMatchButton = new Button("Back To Store");
+        noMatchButton.getStyleClass().add("no-match-button");
+        noMatchButton.setOnAction((evt) -> {
+            routeState.pushState(new ArrayList<>() {{
+                add(new Pair<>("page", AppRoot.STORE_PAGE_NAME));
+            }});
+        });
+        noMatchesBox.getChildren().addAll(noMatchText, noMatchButton);
+    }
+
     public SearchPage(GameCollection masterCollection, RouteState routeState) {
         this.masterCollection = masterCollection;
         this.routeState = routeState;
@@ -63,40 +109,29 @@ public class SearchPage extends BorderPane {
         searchHBox = new HBox();
         searchHBox.getChildren().addAll(searchBar);
         searchHBox.setAlignment(Pos.CENTER_RIGHT);
+
         topHBox = new HBox();
         topHBox.getStyleClass().add("top-box");
         topHBox.getChildren().addAll(storeButton, searchHBox);
         topHBox.setHgrow(searchHBox, Priority.ALWAYS);
+
         titleText = createTitleText();
         titleHBox = new HBox();
         titleHBox.getStyleClass().add("title-box");
         titleHBox.getChildren().add(titleText);
-        sortButton = new DropDownButton("Sort By", new ArrayList<>(){{
-            add("Relevant");
-            add("Popular");
-            add("Recent");
-        }}, SelectionMode.SINGLE);
-        filterButton = new DropDownButton("Filter", new ArrayList<>(){{
-            add("Relevant");
-            add("Popular");
-            add("Recent");
-        }}, SelectionMode.MULTIPLE);
-        filterButton.setSelectedItems(new ArrayList<>(){{
-            add("Relevant");
-            add("Popular");
-        }});
-        sortHBox = new HBox();
-        sortHBox.getStyleClass().add("sort-box");
-        sortHBox.getChildren().addAll(sortButton, filterButton);
-        sortHBox.setAlignment(Pos.CENTER_LEFT);
+
         verticalGameList = new VerticalGameList(routeState);
         listArea.getChildren().add(verticalGameList);
         gameScrollPane = new ScrollPane();
         gameScrollPane.setContent(listArea);
         gameScrollPane.setFitToWidth(true);
+
+        initFilterBar();
+        initNoMatchesBox();
+
         gamePane = new BorderPane();
         gamePane.setCenter(gameScrollPane);
-        gamePane.setTop(sortHBox);
+        gamePane.setTop(filterBar);
         body = new VBox();
         body.getChildren().addAll(titleHBox, gamePane);
         this.setCenter(body);
@@ -108,15 +143,28 @@ public class SearchPage extends BorderPane {
                     System.err.println("SearchPage: Missing gameCollection in routeState");
                     return;
                 }
-                searchCollection = (GameCollection)state.get("gameCollection");
-                verticalGameList.setGames(searchCollection.games);
-                if (!state.containsKey("search")) {
-                    System.err.println("SearchPage: Missing search in routeState");
+                GameCollection gameCollection = (GameCollection)state.get("gameCollection");
+                if (gameCollection != searchCollection) {
+                    searchCollection = gameCollection;
+                    verticalGameList.setGames(searchCollection.games);
+                    filterBar.setGameCollection(searchCollection);
+                    if (searchCollection.games.isEmpty()) {
+                        showNoMatches();
+                    } else {
+                        showSortList();
+                    }
+                }
+                if (!state.containsKey("title")) {
+                    System.err.println("SearchPage: Missing title in routeState");
                     return;
                 }
-                String searchText = (String)state.get("search");
-                titleText.setText("Results for \"" + searchText + "\"");
-                searchBar.setSearch(searchText);
+                String titleStr = (String)state.get("title");
+                titleText.setText(titleStr);
+                if (state.containsKey("search") && state.get("search") != null) {
+                    searchBar.setSearch((String)state.get("search"));
+                } else {
+                    searchBar.setSearch("");
+                }
             }
         });
     }

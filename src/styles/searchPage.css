@@ -72,3 +72,24 @@
 .list-area {
     -fx-padding: 10px 120px 30px 30px;
 }
+
+.no-match-text {
+    -fx-font-family: Calibri;
+    -fx-font-size: 1.4em;
+    -fx-text-fill: white;
+    -fx-padding: 10px 10px 10px 10px;
+}
+
+.no-match-button {
+    -fx-border-color: rgb(246, 108, 29);
+    -fx-border-radius: 5px;
+    -fx-text-fill: rgb(246, 108, 29);
+    -fx-font-family: Calibri;
+    -fx-font-size: 1.5em;
+    -fx-background-color: transparent;
+}
+
+.no-match-button:hover {
+    -fx-font-weight: bold;
+    -fx-text-fill: orange;
+}

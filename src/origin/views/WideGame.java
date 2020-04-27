@@ -33,7 +33,6 @@ public class WideGame extends HBox {
     private ImageView createGameImage() {
         try {
             BufferedImage img = ImageIO.read(new File("src" + game.horzImgUri));
-            System.out.println("CROPPING: " + game.horzImgUri);
             ImageView imageView = new ImageView(SwingFXUtils.toFXImage(img.getSubimage(450, 0, 1100, 500), null));
             imageView.getStyleClass().add("game-image");
             imageView.setPreserveRatio(true);
@@ -91,7 +90,6 @@ public class WideGame extends HBox {
         Label rating = this.createRating();
         VBox infoBox = new VBox(0);
         infoBox.getChildren().addAll(title, rating);
-        System.out.println(game.owned);
         if (game.owned) {
             infoBox.getChildren().add(this.createOwned());
         }

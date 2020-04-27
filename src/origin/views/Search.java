@@ -49,7 +49,9 @@ public class Search extends VBox {
         if (searchField.getText().length() > 0) {
             routeState.pushState(new ArrayList<>() {{
                 add(new Pair<>("page", AppRoot.SEARCH_PAGE_NAME));
+                add(new Pair<>("title", "Results for \"" + searchField.getText() + "\""));
                 add(new Pair<>("search", searchField.getText()));
+                add(new Pair<>(AppRoot.SEARCH_PAGE_NAME + "SortBy", FilterBar.MOST_POPULAR));
                 add(new Pair<>("gameCollection", searchCollection));
             }});
         }
