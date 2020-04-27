@@ -13,6 +13,7 @@ import origin.model.GameData;
 import origin.utils.GuiHelper;
 import origin.utils.RouteState;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 /**
@@ -23,18 +24,17 @@ public class TallGame extends StackPane {
     private VBox gameInfo;
     private Button gameButton;
     private Label title;
-    private Label description;
+    private Label price;
     private RouteState routeState;
 
-    //TODO remove this when we actually have chips
-    private Label chips;
+    private Chips chips;
 
     private VBox createGameInfo() {
         VBox box = new VBox();
         this.title.wrapTextProperty().bind(box.fillWidthProperty());
-        this.description.wrapTextProperty().bind(box.fillWidthProperty());
+        this.price.wrapTextProperty().bind(box.fillWidthProperty());
 
-        box.getChildren().addAll(this.title, this.description, this.chips);
+        box.getChildren().addAll(this.title, this.price, this.chips);
         box.setStyle("-fx-background-color: linear-gradient(from 0% 100% to 30% 0%, #000000, " + this.game.color + ")");
         box.getStyleClass().addAll("minimized-info", "game-info");
         return box;
@@ -42,13 +42,11 @@ public class TallGame extends StackPane {
 
     private void expandInfo() {
         GuiHelper.SwapClasses(this.gameInfo, "minimized-info", "expanded-info");
-        this.description.setVisible(true);
         this.chips.setVisible(true);
     }
 
     private void shrinkInfo() {
         GuiHelper.SwapClasses(this.gameInfo, "expanded-info", "minimized-info");
-        this.description.setVisible(false);
         this.chips.setVisible(false);
     }
 
@@ -79,12 +77,16 @@ public class TallGame extends StackPane {
         this.title = new Label(this.game.title);
         this.title.getStyleClass().add("game-title");
 
-        this.description = new Label(this.game.description);
-        this.description.getStyleClass().add("game-desc");
-        this.description.setVisible(false);
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        String priceStr = (game.owned)? "Owned": formatter.format(game.price);
+        this.price = new Label(priceStr);
+        this.price.getStyleClass().add((game.owned)? "game-owned": "game-price");
+        this.price.setTranslateX(10.0);
 
-        //TODO remove this when we actually have chips
-        this.chips = new Label("*chips go here*");
+        ArrayList<String> chipItems = new ArrayList<>();
+        chipItems.addAll(game.categories);
+        chipItems.addAll(game.filters);
+        chips = new Chips(chipItems);
         this.chips.getStyleClass().add("game-chips");
         this.chips.setVisible(false);
 
@@ -95,7 +97,5 @@ public class TallGame extends StackPane {
 
         this.getChildren().addAll(image, this.gameInfo, this.gameButton);
         this.setAlignment(Pos.BOTTOM_CENTER);
-
-
     }
 }

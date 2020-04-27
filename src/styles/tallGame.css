@@ -16,7 +16,7 @@
 .game-title {
     -fx-text-fill: white;
     -fx-font-size: 1.5em;
-    -fx-padding: 20px 0px 0px 10px;
+    -fx-padding: 20px 0px 15px 10px;
 }
 
 .game-desc {
@@ -28,8 +28,7 @@
 .game-chips {
     -fx-text-fill: white;
     -fx-font-size: 1em;
-    -fx-padding: 10px 10px 0px 20px;
-
+    -fx-padding: 10px 10px 0px 10px;
 }
 
 .game-button {
@@ -39,6 +38,19 @@
     -fx-min-width: 231px;
     -fx-border-color: transparent;
     -fx-background-color: transparent;
+}
+
+.game-owned {
+    -fx-background-color: #5fd475;
+    -fx-background-radius: 5px;
+    -fx-padding: 5px 5px 5px 5px;
+    -fx-text-fill: black;
+}
+
+.game-price {
+    -fx-font-family: Calibri;
+    -fx-font-size: 1.4em;
+    -fx-text-fill: white;
 }
 
 .root {

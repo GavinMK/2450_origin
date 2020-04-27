@@ -52,6 +52,11 @@
     -fx-background-color: transparent;
 }
 
+.sales-button:hover {
+    -fx-font-weight: bold;
+    -fx-text-fill: orange;
+}
+
 .sale-info {
     -fx-min-height: 38px;
     -fx-background-color: black;
