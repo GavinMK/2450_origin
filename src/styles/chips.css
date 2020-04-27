@@ -1,0 +1,11 @@
+.chip {
+    -fx-font-family: Calibri;
+    -fx-border-color: #1D1D1D;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+    -fx-background-color: transparent;
+    -fx-font-size: 1.3em;
+    -fx-text-fill: white;
+    -fx-padding: 4px;
+}

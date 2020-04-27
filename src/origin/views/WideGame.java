@@ -29,6 +29,7 @@ public class WideGame extends HBox {
     private Label title;
     private Label price;
     private RouteState routeState;
+    private Chips chips;
 
     private ImageView createGameImage() {
         try {
@@ -95,9 +96,16 @@ public class WideGame extends HBox {
         }
         else infoBox.getChildren().add(price);
         infoBox.getStyleClass().add("info-box");
+
+        ArrayList<String> chipItems = new ArrayList<>();
+        chipItems.addAll(game.categories);
+        chipItems.addAll(game.filters);
+        chips = new Chips(chipItems);
+
         gameInfo = new HBox();
         gameInfo.getStyleClass().add("game-info");
-        gameInfo.getChildren().addAll(gameImage, infoBox);
+        gameInfo.setAlignment(Pos.CENTER_LEFT);
+        gameInfo.getChildren().addAll(gameImage, infoBox, chips);
     }
 
     public WideGame(GameData game, RouteState routeState) {

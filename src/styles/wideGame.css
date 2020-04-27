@@ -19,6 +19,7 @@
 
 .info-box {
     -fx-padding: 16px 16px 16px 16px;
+    -fx-min-width: 400px;
 }
 
 .game-price {
@@ -31,7 +32,7 @@
     -fx-font-family: Calibri;
     -fx-font-size: 1.4em;
     -fx-text-fill: white;
-    -fx-padding: 6px 0px 0px 0px;
+    -fx-padding: 6px 0px 10px 0px;
 }
 
 .game-description {
