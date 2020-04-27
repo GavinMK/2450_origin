@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Filter;
 
 /*
     Entry point of application, handles high-level routing and toolbars
@@ -52,9 +53,22 @@ public class AppRoot extends Application {
 
     private NavBar createNavBar() {
         return new NavBar(new ArrayList<>() {{
-            add(STORE_PAGE_NAME);
-            add(LIBRARY_PAGE_NAME);
-            add(ACCESS_PAGE_NAME);
+            add(new Pair<>(STORE_PAGE_NAME, () -> {
+                routeState.pushState(new ArrayList<>() {{
+                    add(new Pair<>("page", STORE_PAGE_NAME));
+                    addAll(FilterBar.GetClearState(Store.ROUTE_PREFIX));
+                }});
+            }));
+            add(new Pair<>(LIBRARY_PAGE_NAME, () -> {
+                routeState.pushState(new ArrayList<>() {{
+                    add(new Pair<>("page", LIBRARY_PAGE_NAME));
+                }});
+            }));
+            add(new Pair<String, Runnable>(ACCESS_PAGE_NAME, () -> {
+                routeState.pushState(new ArrayList<>() {{
+                    add(new Pair<>("page", ACCESS_PAGE_NAME));
+                }});
+            }));
         }}, routeState);
     }
 

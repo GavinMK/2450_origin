@@ -9,6 +9,8 @@ import origin.utils.RouteState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /*
     UI to traverse routeState, including arrows and pages
@@ -51,17 +53,15 @@ public class NavBar extends HBox {
         return button;
     }
 
-    private HashMap<String, Button> createPageButtons(ArrayList<String> pageNames) {
+    private HashMap<String, Button> createPageButtons(List<Pair<String, Runnable>> pages) {
         HashMap<String, Button> pageButtons = new HashMap<>();
-        for (String pageName: pageNames) {
+        for (Pair<String, Runnable> entry: pages) {
+            String pageName = entry.getKey();
             Button pageButton = new Button(pageName);
             pageButton.getStyleClass().addAll("page-button", "nav-button");
             //Be super careful, lambda context may be saving pageName reference, not pageName value
             pageButton.setOnAction((evt) -> {
-                System.out.println("Button clicked: " + pageName);
-                routeState.pushState(new ArrayList<>() {{
-                    add(new Pair<>("page", pageName));
-                }});
+                entry.getValue().run();
             });
             pageButtons.put(pageName, pageButton);
         }
@@ -83,7 +83,7 @@ public class NavBar extends HBox {
         return button;
     }
 
-    public NavBar(ArrayList<String> pageNames, RouteState routeState) {
+    public NavBar(List<Pair<String, Runnable>> pages, RouteState routeState) {
         super();
         this.routeState = routeState;
 
@@ -92,14 +92,14 @@ public class NavBar extends HBox {
 
         backButton = createBackButton();
         forwardButton = createForwardButton();
-        pageButtons = createPageButtons(pageNames);
+        pageButtons = createPageButtons(pages);
         profileButton = createProfileButton();
 
         leftBox = new HBox();
         leftBox.getChildren().addAll(backButton, forwardButton);
         //Add page buttons in order of array
-        for (String pageName: pageNames) {
-            leftBox.getChildren().add(pageButtons.get(pageName));
+        for (Pair<String, Runnable> entry: pages) {
+            leftBox.getChildren().add(pageButtons.get(entry.getKey()));
         }
 
         rightBox = new HBox();
@@ -115,7 +115,6 @@ public class NavBar extends HBox {
             if (state.containsKey("page")) {
                 String pageName = (String)state.get("page");
                 if (pageName != activePageName) {
-                    //TODO: we can modify this to not change if pageButtons does not containKey (eg. go to game page from store page)
                     if (activePageName != null && pageButtons.containsKey(activePageName)) {
                         Button pageButton = pageButtons.get(activePageName);
                         GuiHelper.SwapClasses(pageButton, "active-page-button", "page-button");
