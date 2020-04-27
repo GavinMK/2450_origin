@@ -4,6 +4,7 @@ import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /*
     A collection of game data that can be filtered, searched, and sorted
@@ -59,8 +60,12 @@ public class GameCollection {
         gameData.horzImgUri = (data.get(9).length() > 0)? data.get(9): null;
         gameData.gifUri = (data.get(10).length() > 0)? data.get(10): null;
         gameData.color = (data.get(11).length() > 0)? data.get(11): null;
-        gameData.categories = new HashSet<>(Arrays.asList(data.get(12).split(",")));
-        gameData.filters = new HashSet<>(Arrays.asList(data.get(13).split(",")));
+        gameData.categories = new HashSet<>(Arrays.stream(data.get(12).split(","))
+                .map(String::trim)
+                .collect(Collectors.toList()));
+        gameData.filters = new HashSet<>(Arrays.stream(data.get(13).split(","))
+                .map(String::trim)
+                .collect(Collectors.toList()));
         gameData.saleGroup = (data.get(14).length() > 0)? data.get(14): null;
         return gameData;
     }
@@ -90,13 +95,22 @@ public class GameCollection {
         return new GameCollection(matchingGames);
     }
 
+    private boolean containsAll(Set<String> set, List<String> list) {
+        for (String str: list) {
+            if (!set.contains(str)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public GameCollection getMatchingGames(List<String> categories, List<String> filters) {
         ArrayList<GameData> matchingGames = new ArrayList<>();
         gameLoop: for (GameData game: games) {
             //Game must match all filters
-            if (game.filters.containsAll(filters)) {
+            if (filters == null || containsAll(game.filters, filters)) {
                 //Game must match at least 1 category, if categories specified
-                if (!categories.isEmpty()) {
+                if (categories != null && !categories.isEmpty()) {
                     for (String category : categories) {
                         if (game.categories.contains(category)) {
                             matchingGames.add(game);
@@ -125,8 +139,9 @@ public class GameCollection {
     }
 
     public List<GameData> sortRecent() {
-        List<GameData> sortedGames = new ArrayList<>(games);
+        ArrayList<GameData> sortedGames = new ArrayList<>(games);
         sortedGames.sort(Comparator.comparing(g -> g.datePublished));
+        Collections.reverse(sortedGames);
         return sortedGames;
     }
 
@@ -138,7 +153,7 @@ public class GameCollection {
 
     public List<GameData> sortPrice() {
         List<GameData> sortedGames = new ArrayList<>(games);
-        sortedGames.sort((g1, g2) -> (int)(g1.salesPrice - g2.salesPrice));
+        sortedGames.sort(Comparator.comparingDouble(g -> g.price));
         return sortedGames;
     }
 }

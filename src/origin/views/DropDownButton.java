@@ -2,6 +2,7 @@ package origin.views;
 
 import javafx.animation.RotateTransition;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -19,12 +20,13 @@ import java.util.function.Consumer;
 
 public class DropDownButton extends VBox {
     private Consumer<List<String>> selectListener = null;
+    private Runnable hideListener = null;
     private boolean showingList = false;
     private String name;
     private DropDownList dropDownList;
     private HBox dropButton;
     private Text label;
-    private Text selectedText;
+    private Label selectedText;
     private ImageView dropArrow;
     private HBox dropHBox;
     private RotateTransition dropArrowUpTransition;
@@ -37,8 +39,8 @@ public class DropDownButton extends VBox {
         return text;
     }
 
-    private Text createSelectedText() {
-        Text text = new Text();
+    private Label createSelectedText() {
+        Label text = new Label();
         text.getStyleClass().add("selected-text");
         return text;
     }
@@ -61,6 +63,9 @@ public class DropDownButton extends VBox {
             dropDownList.setVisible(false);
 
             showingList = false;
+            if (hideListener != null) {
+                hideListener.run();
+            }
         }
     }
 
@@ -104,7 +109,7 @@ public class DropDownButton extends VBox {
         dropDownList.setManaged(false);
         dropDownList.setVisible(false);
         dropDownList.setChangeListener((List<String> selectedItems) ->  {
-            if (selectedItems != null && selectedItems.size() > 0) {
+            if (selectedItems != null && (selectedItems.size() > 1 || (selectedItems.size() > 0 && items.contains(selectedItems.get(0))))) {
                 label.setText(name + ": ");
                 String selectedItemsStr = "";
                 for (int i = 0; i < selectedItems.size(); i++) {
@@ -122,7 +127,7 @@ public class DropDownButton extends VBox {
                 selectedText.setText("");
             }
             if (selectListener != null) {
-                selectListener.accept(items);
+                selectListener.accept(selectedItems);
             }
         });
         return dropDownList;
@@ -174,5 +179,13 @@ public class DropDownButton extends VBox {
         if (selectedItems != null) {
             listener.accept(selectedItems);
         }
+    }
+
+    public void setHideListener(Runnable listener) {
+        this.hideListener = listener;
+    }
+
+    public void setExtra(String extra) {
+        dropDownList.setExtra(extra);
     }
 }

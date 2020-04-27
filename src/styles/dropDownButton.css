@@ -6,8 +6,9 @@
 
 .selected-text {
     -fx-font-family: Calibri;
-    -fx-fill: orange;
+    -fx-text-fill: orange;
     -fx-font-size: 1.6em;
+    -fx-padding: 0px 0px 3px 0px;
 }
 
 .drop-button {
@@ -17,6 +18,7 @@
     -fx-background-color: transparent;
     -fx-min-width: 150px;
     -fx-padding: 4px 4px 4px 4px;
+    -fx-border-width: 2px;
 }
 
 .toggle-on {
@@ -24,7 +26,6 @@
     -fx-border-color: #2B2B2B;
     -fx-border-radius: 0px;
     -fx-background-radius: 0px;
-    -fx-border-width: 2px;
 }
 
 .drop-button:hover {
