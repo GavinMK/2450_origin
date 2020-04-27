@@ -1,7 +1,7 @@
 .game-title {
     -fx-font-family: Calibri;
     -fx-font-size: 2.0em;
-    -fx-fill: white;
+    -fx-text-fill: white;
 }
 
 .game-image {
@@ -10,28 +10,45 @@
     -fx-background-radius: 5px;
 }
 
-.info-pane {
-    -fx-padding: 12px 12px 12px 12px;
+.game-owned {
+    -fx-background-color: #5fd475;
+    -fx-background-radius: 5px;
+    -fx-padding: 5px 5px 5px 5px;
+    -fx-text-fill: black;
+}
+
+.info-box {
+    -fx-padding: 16px 16px 16px 16px;
 }
 
 .game-price {
     -fx-font-family: Calibri;
-    -fx-font-size: 1.8em;
-    -fx-fill: white;
-    -fx-padding: 12px 12px 12px 12px;
+    -fx-font-size: 1.4em;
+    -fx-text-fill: white;
+}
+
+.game-rating {
+    -fx-font-family: Calibri;
+    -fx-font-size: 1.4em;
+    -fx-text-fill: white;
+    -fx-padding: 6px 0px 0px 0px;
 }
 
 .game-description {
     -fx-font-family: Calibri;
     -fx-font-size: 1.4em;
-    -fx-fill: white;
+    -fx-text-fill: #C0C0C0;
 }
 
 .wide-game {
     -fx-background-color: #171717;
+    -fx-background-radius: 10px;
+    -fx-border: none;
+    -fx-border-color: transparent;
 }
 
 .wide-game:hover {
     -fx-background-color: #040404;
-    -fx-border-color: #060606;
+    -fx-border: none;
+    -fx-border-color: transparent;
 }

@@ -136,7 +136,7 @@ public class HorizontalGameList extends HBox {
 
         setGames(games);
 
-        this.getStylesheets().add("/styles/gameList.css");
+        this.getStylesheets().add("/styles/horiz-gameList.css");
         this.getChildren().addAll(this.leftButton, this.visibleGames, this.rightButton);
         if (this.specialFrame != null) {
            this.enableSpecialFrame();

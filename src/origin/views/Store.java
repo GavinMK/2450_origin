@@ -84,8 +84,20 @@ public class Store extends BorderPane {
     private Button createShowButton(String buttonClass, String buttonText) {
         Button showButton = new Button(buttonText);
         showButton.getStyleClass().add(buttonClass);
+        return showButton;
+    }
+
+    private Button createShowButton(String buttonClass, String buttonText, String title, GameCollection collection) {
+        Button showButton = new Button(buttonText);
+        showButton.getStyleClass().add(buttonClass);
         showButton.setOnAction((evt) -> {
-            //TODO navigate to filtered search page
+            //TODO make it so that the title isn't results for X and dont populate the search bar.
+            this.routeState.pushState(new ArrayList<>() {{
+                add(new Pair<>("page", AppRoot.SEARCH_PAGE_NAME));
+                add(new Pair<>("search", title));
+                add(new Pair<>("gameCollection", collection));
+            }});
+
         });
         return showButton;
     }
@@ -131,7 +143,7 @@ public class Store extends BorderPane {
         list.getStyleClass().add("sale-list");
 
         HBox controls = new HBox();
-        Button showButton = createShowButton("sales-button", "See All Sales");
+        Button showButton = createShowButton("sales-button", "See All Sales", title + " Super Sale", new GameCollection(games));
         controls.setAlignment(Pos.CENTER);
         controls.getChildren().add(showButton);
         controls.getStyleClass().add("sale-controls");

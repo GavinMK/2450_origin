@@ -52,7 +52,7 @@ public class GameCollection {
         gameData.description = data.get(1);
         gameData.numSales = Integer.parseInt(data.get(2));
         gameData.datePublished = DATE_FORMAT.parse(data.get(3));
-        gameData.owned = (data.get(4).toLowerCase() == "true");
+        gameData.owned = (data.get(4).toLowerCase().equals("true"));
         gameData.price = Float.parseFloat(data.get(5));
         gameData.salesPrice = (data.get(6).length() > 0)? Float.parseFloat(data.get(6)): -1;
         gameData.largeImgUri = (data.get(7).length() > 0)? data.get(7): null;
