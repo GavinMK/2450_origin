@@ -22,40 +22,8 @@ import java.util.function.Function;
 
 //TODO: This whole thing
 public class Store extends BorderPane {
-    private static final String POPULAR_KEY = "Most Popular";
-    private static final String RECENT_KEY = "Most Recent";
-    private static HashMap<String, Function<GameCollection, List<GameData>>> SORT_BYS = new HashMap<>() {{
-        put(POPULAR_KEY, (collection) -> collection.sortDescendingPopular());
-        put(RECENT_KEY, (collection) -> collection.sortRecent());
-        put("Lowest Price", (collection) -> collection.sortPrice());
-        put("Highest Price", (collection) -> {
-            List<GameData> games = collection.sortPrice();
-            Collections.reverse(games);
-            return games;
-        });
-    }};
-
-    private static List<String> GENRES = new ArrayList<>() {{
-        add("Action");
-        add("Adventure");
-        add("Racing");
-        add("Sports");
-        add("Strategy");
-    }};
-
-    private static List<String> FILTERS = new ArrayList<>() {{
-        add("Rated E");
-        add("Rated T");
-        add("Rated M");
-        add("Single Player");
-        add("Multiplayer");
-    }};
-
+    public static final String ROUTE_PREFIX = "store";
     private GameCollection masterCollection;
-    private GameCollection activeCollection;
-    private List<String> activeFilters = null;
-    private List<String> activeGenres = null;
-    private String sortingBy = null;
     private RouteState routeState;
     private ScrollPane scroller;
     private VBox body;
@@ -68,10 +36,7 @@ public class Store extends BorderPane {
     private HorizontalGameList popularList;
     private HorizontalGameList recentList;
     private VerticalGameList sortedGameList;
-    private DropDownButton sortByDropButton;
-    private DropDownButton genreDropButton;
-    private DropDownButton filterDropButton;
-    private HBox filterBar;
+    private FilterBar filterBar;
     private VBox horzGameBox;
     private VBox vertGameBox;
     private VBox listBody;
@@ -153,40 +118,35 @@ public class Store extends BorderPane {
         return box;
     }
 
-    private void updateLists(GameCollection collection, String sortingBy) {
-        this.sortingBy = sortingBy;
-        if(collection.games.isEmpty()) {
-            if (!activeCollection.games.isEmpty()) {
+    private void initFilterBar() {
+        filterBar = new FilterBar(masterCollection);
+        filterBar.setCollectionListener((collection, changedField) -> {
+            if (collection.games.isEmpty()) {
                 showNoMatches();
-            }
-            activeCollection = collection;
-        } else {
-            activeCollection = collection;
-            if (sortingBy != null) {
-                List<GameData> games = SORT_BYS.get(sortingBy).apply(collection);
-                sortedGameList.setGames(games);
-                showSortList();
             } else {
                 popularList.setGames(collection.sortDescendingPopular());
                 recentList.setGames(collection.sortRecent());
                 showHorzLists();
             }
-        }
-    }
-
-    private void pushListState() {
-        routeState.pushState(new ArrayList<>() {{
-            add (new Pair<>("storeActiveGenres", (activeGenres != null)? new ArrayList<>(activeGenres): null));
-            add (new Pair<>("storeActiveFilters", (activeFilters != null)? new ArrayList<>(activeFilters): null));
-            add (new Pair<>("storeSortBy", sortingBy));
-        }});
+        });
+        filterBar.setListListener((games, changedField) -> {
+            if (games.isEmpty()) {
+                showNoMatches();
+            } else {
+                sortedGameList.setGames(games);
+                showSortList();
+            }
+        });
+        filterBar.linkWithRouteState(ROUTE_PREFIX, routeState);
     }
 
     private void showNoMatches() {
-        listBody.getChildren().clear();
-        listBody.getChildren().add(noMatchesBox);
-        showingSortList = false;
-        showingHorzList = false;
+        if (showingHorzList || showingHorzList) {
+            listBody.getChildren().clear();
+            listBody.getChildren().add(noMatchesBox);
+            showingSortList = false;
+            showingHorzList = false;
+        }
     }
 
     private void showSortList() {
@@ -207,83 +167,15 @@ public class Store extends BorderPane {
         }
     }
 
-    private void initFilterBar() {
-        filterBar = new HBox();
-        filterBar.getStyleClass().add("filter-bar");
-        sortByDropButton = new DropDownButton("Sort By", new ArrayList<>(SORT_BYS.keySet()), SelectionMode.SINGLE);
-        sortByDropButton.getStyleClass().addAll("filter-button",  "filter-button-divide");
-        sortByDropButton.setExtra("Clear");
-        sortByDropButton.setMinWidth(150.0);
-        genreDropButton = new DropDownButton("Genres", GENRES, SelectionMode.MULTIPLE);
-        genreDropButton.getStyleClass().addAll("filter-button", "filter-button-divide");
-        genreDropButton.setMinWidth(150.0);
-        filterDropButton = new DropDownButton("Filters", FILTERS, SelectionMode.MULTIPLE);
-        filterDropButton.getStyleClass().add("filter-button");
-        Runnable onHide = () -> {
-            pushListState();
-        };
-
-        sortByDropButton.setSelectListener((List<String> selectedItems) -> {
-            if (selectedItems != null && selectedItems.size() > 0) {
-                String item = selectedItems.get(0);
-                if (SORT_BYS.containsKey(item)) {
-                    if (!item.equals(sortingBy)) {
-                        this.sortingBy = item;
-                        pushListState();
-                    }
-                } else if (sortingBy != null) {
-                    this.sortingBy = null;
-                    pushListState();
-                }
-            }
-        });
-
-        genreDropButton.setSelectListener((List<String> selectedItems) -> {
-            if (selectedItems != null && selectedItems.size() > 0) {
-                activeGenres = selectedItems;
-            } else {
-                activeGenres = null;
-            }
-            updateLists(masterCollection.getMatchingGames(activeGenres, activeFilters), sortingBy);
-        });
-        genreDropButton.setHideListener(onHide);
-
-        filterDropButton.setSelectListener((List<String> selectedItems) -> {
-            if (selectedItems != null && selectedItems.size() > 0) {
-                activeFilters = selectedItems;
-            } else {
-                activeFilters = null;
-            }
-            updateLists(masterCollection.getMatchingGames(activeGenres, activeFilters), sortingBy);
-        });
-        filterDropButton.setHideListener(onHide);
-
-        List<Node> dropButtonList = Arrays.asList(sortByDropButton, genreDropButton, filterDropButton);
-        for (int i = 0; i < dropButtonList.size(); i++) {
-            HBox buttonWrapper = new HBox();
-            buttonWrapper.getStyleClass().add("drop-button-wrapper");
-            if (i < dropButtonList.size() - 1) {
-                buttonWrapper.getStyleClass().add("drop-button-wrapper-divide");
-            }
-            Region region = new Region();
-            buttonWrapper.getChildren().addAll(dropButtonList.get(i), region);
-            buttonWrapper.setMaxWidth(220.0);
-            buttonWrapper.setMinWidth(220.0);
-            filterBar.getChildren().add(buttonWrapper);
-        }
-    }
-
     private void initHorzGames() {
         horzGameBox = new VBox();
         Pair<VBox, HorizontalGameList> popularViews = createGameList("Most Popular", masterCollection.sortDescendingPopular(), () -> {
-            sortingBy = POPULAR_KEY;
-            pushListState();
+            filterBar.setSortBy(FilterBar.MOST_POPULAR);
         });
         this.mostPopular = popularViews.getKey();
         this.popularList = popularViews.getValue();
         Pair<VBox, HorizontalGameList> recentViews = createGameList("Most Recent", masterCollection.sortRecent(), () -> {
-            sortingBy = RECENT_KEY;
-            pushListState();
+            filterBar.setSortBy(FilterBar.MOST_RECENT);
         });
         this.mostRecent = recentViews.getKey();
         this.recentList = recentViews.getValue();
@@ -305,9 +197,8 @@ public class Store extends BorderPane {
         Button unfilterButton = new Button("Clear Filters");
         unfilterButton.getStyleClass().add("no-match-button");
         unfilterButton.setOnAction((evt) -> {
-            activeGenres = null;
-            activeFilters = null;
-            pushListState();
+            filterBar.setGenres(null);
+            filterBar.setFilters(null);
         });
         noMatchesBox.getChildren().addAll(noMatchText, unfilterButton);
     }
@@ -315,7 +206,6 @@ public class Store extends BorderPane {
     public Store(GameCollection masterCollection, RouteState routeState) {
         super();
         this.masterCollection = masterCollection;
-        this.activeCollection = masterCollection;
         this.routeState = routeState;
 
         this.getStylesheets().addAll("/styles/store.css");
@@ -335,11 +225,12 @@ public class Store extends BorderPane {
         listBody = new VBox();
         initHorzGames();
         initVertGameBox();
-        initFilterBar();
         listBody.getChildren().add(horzGameBox);
 
         listPane = new BorderPane();
         listPane.setCenter(listBody);
+
+        initFilterBar();
         listPane.setTop(filterBar);
 
         body = new VBox();
@@ -352,28 +243,5 @@ public class Store extends BorderPane {
         this.setCenter(scroller);
         this.setTop(searchHBox);
 
-        routeState.subscribe((state) -> {
-            if (state.get("page") == AppRoot.STORE_PAGE_NAME) {
-                if (state.containsKey("storeSortBy") && state.get("storeSortBy") != null) {
-                    sortingBy = (String)state.get("storeSortBy");
-                } else {
-                    sortingBy = null;
-                }
-                if (state.containsKey("storeActiveGenres") && state.get("storeActiveGenres") != null) {
-                    activeGenres = (List<String>)state.get("storeActiveGenres");
-                } else {
-                    activeGenres = null;
-                }
-                if (state.containsKey("storeActiveFilters") && state.get("storeActiveFilters") != null) {
-                    activeFilters = (List<String>)state.get("storeActiveFilters");
-                } else {
-                    activeFilters = null;
-                }
-                this.sortByDropButton.setSelectedItems((sortingBy != null)? new ArrayList<>(){{ add(sortingBy); }}: null);
-                this.genreDropButton.setSelectedItems(activeGenres);
-                this.filterDropButton.setSelectedItems(activeFilters);
-                updateLists(masterCollection.getMatchingGames(activeGenres, activeFilters), sortingBy);
-            }
-        });
     }
 }
