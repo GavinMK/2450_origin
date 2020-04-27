@@ -148,14 +148,16 @@ public class DropDownList extends VBox {
 
     public void setSelectedItems(List<String> selectedItems) {
         if (selectionMode == SelectionMode.SINGLE) {
-            if (selectedItems.size() > 1) {
-                System.err.println("Passed multiple selections to DropDownList on single selection mode");
+            if (selectedItems == null || selectedItems.size() == 0) {
+                selectItem(null);
             } else if (selectedItems.size() == 1) {
                 selectItem(selectedItems.get(0));
+            } else {
+                System.err.println("Passed multiple selections to DropDownList on single selection mode");
             }
         } else {
-            for (Map.Entry<String, CheckBox> entry: checkBoxes.entrySet()) {
-                entry.getValue().setSelected(selectedItems.contains(entry.getKey()));
+            for (Map.Entry<String, CheckBox> entry : checkBoxes.entrySet()) {
+                entry.getValue().setSelected((selectedItems != null)? selectedItems.contains(entry.getKey()): false);
             }
         }
     }
