@@ -76,8 +76,13 @@ public class HorizontalGameList extends HBox {
         this.getChildren().remove(this.leftButton);
         this.getChildren().add(0, this.specialFrame);
         this.isSpecialFrame = true;
-        this.visibleGames.getChildren().remove(3);
-        this.visibleGames.getChildren().remove(2);
+        this.boxCount = getMaxBoxCount();
+        if (this.visibleGames.getChildren().size() >= 4) {
+            this.visibleGames.getChildren().remove(3);
+        }
+        if (this.visibleGames.getChildren().size() >= 3) {
+            this.visibleGames.getChildren().remove(2);
+        }
         //this.visibleGames.getChildren().remove(1);
     }
 
@@ -85,10 +90,15 @@ public class HorizontalGameList extends HBox {
         this.getChildren().remove(0);
         this.getChildren().add(0, this.leftButton);
         this.isSpecialFrame = false;
+        this.boxCount = getMaxBoxCount();
         this.leftButton.setDisable(false);
         //this.visibleGames.getChildren().add(1, this.gameBoxes.get(1));
-        this.visibleGames.getChildren().add(2, this.gameBoxes.get(2));
-        this.visibleGames.getChildren().add(3, this.gameBoxes.get(3));
+        if (this.gameBoxes.size() >= 3) {
+            this.visibleGames.getChildren().add(2, this.gameBoxes.get(2));
+        }
+        if (this.gameBoxes.size() >= 4) {
+            this.visibleGames.getChildren().add(3, this.gameBoxes.get(3));
+        }
     }
 
     private void populateVisibleGames() {
@@ -134,12 +144,15 @@ public class HorizontalGameList extends HBox {
             this.specialFrame.getStyleClass().add("special-frame");
         }
 
+        if (this.specialFrameUri != null) {
+            this.isSpecialFrame = true;
+        }
         setGames(games);
 
         this.getStylesheets().add("/styles/horiz-gameList.css");
         this.getChildren().addAll(this.leftButton, this.visibleGames, this.rightButton);
         if (this.specialFrame != null) {
-           this.enableSpecialFrame();
+            this.enableSpecialFrame();
         }
     }
 
