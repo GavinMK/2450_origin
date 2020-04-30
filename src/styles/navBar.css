@@ -17,7 +17,7 @@
 }
 
 .active-page-button {
-    -fx-text-fill: orange;
+    -fx-text-fill: rgb(246, 108, 29);
     -fx-padding: 8px 40px 4px 10px;
 }
 
