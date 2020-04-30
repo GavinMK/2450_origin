@@ -48,6 +48,7 @@ public class HorizontalGameList extends HBox {
             }
             else if (this.specialFrame != null){
                 this.enableSpecialFrame();
+                if(this.rightButton.isDisabled()) this.rightButton.setDisable(false);
             }
         });
         button.setDisable(true);
@@ -64,9 +65,9 @@ public class HorizontalGameList extends HBox {
             else if(this.getRightIterator() < this.gameBoxes.size() - 1) {
                 this.positiveShiftVisible();
                 this.leftIterator += 1;
-                if (this.getRightIterator() == this.gameBoxes.size() - 1) {
-                    this.rightButton.setDisable(true);
-                }
+            }
+            if (this.getRightIterator() == this.gameBoxes.size() - 1) {
+                this.rightButton.setDisable(true);
             }
         });
         return button;
