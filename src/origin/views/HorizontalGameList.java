@@ -129,7 +129,6 @@ public class HorizontalGameList extends HBox {
 
     public HorizontalGameList(List<GameData> games, RouteState routeState, String specialFrameUri) {
         super();
-        this.games = games;
         this.routeState = routeState;
         this.specialFrameUri = specialFrameUri;
         this.leftIterator = 0;
@@ -161,20 +160,23 @@ public class HorizontalGameList extends HBox {
     }
 
     public void setGames(List<GameData> games) {
-        this.gameBoxes.clear();
-        this.visibleGames.getChildren().clear();
-        this.leftIterator = 0;
-        if (games.size() <= getMaxBoxCount()) {
-            this.leftButton.setVisible(false);
-            this.rightButton.setVisible(false);
-        } else {
-            this.leftButton.setVisible(true);
-            this.rightButton.setVisible(true);
+        if (this.games == null || !this.games.equals(games)) {
+            this.games = games;
+            this.gameBoxes.clear();
+            this.visibleGames.getChildren().clear();
+            this.leftIterator = 0;
+            if (games.size() <= getMaxBoxCount()) {
+                this.leftButton.setVisible(false);
+                this.rightButton.setVisible(false);
+            } else {
+                this.leftButton.setVisible(true);
+                this.rightButton.setVisible(true);
+            }
+            boxCount = (games.size() < getMaxBoxCount()) ? games.size() : getMaxBoxCount();
+            for (GameData game : games) {
+                this.gameBoxes.add(this.createTallGame(game));
+            }
+            this.populateVisibleGames();
         }
-        boxCount = (games.size() < getMaxBoxCount())? games.size(): getMaxBoxCount();
-        for(GameData game: games) {
-            this.gameBoxes.add(this.createTallGame(game));
-        }
-        this.populateVisibleGames();
     }
 }
