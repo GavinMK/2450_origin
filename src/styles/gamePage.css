@@ -29,6 +29,10 @@
     -fx-min-height: 4em;
 }
 
+.buy-button:hover {
+    -fx-cursor: HAND;
+}
+
 .info-box {
     -fx-max-width: 1100px;
     -fx-min-width: 1100px;

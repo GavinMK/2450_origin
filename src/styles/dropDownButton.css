@@ -30,4 +30,5 @@
 
 .drop-button:hover {
     -fx-border-color: white;
+    -fx-cursor: HAND;
 }

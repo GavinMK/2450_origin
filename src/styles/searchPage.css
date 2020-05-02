@@ -19,6 +19,7 @@
 .store-button:hover {
     -fx-border-color: white;
     -fx-background-color: #0F1316;
+    -fx-cursor: HAND;
 }
 
 .title-box {
@@ -92,4 +93,5 @@
 .no-match-button:hover {
     -fx-font-weight: bold;
     -fx-text-fill: orange;
+    -fx-cursor: HAND;
 }

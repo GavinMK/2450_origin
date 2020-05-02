@@ -14,6 +14,7 @@
 
 .nav-button:hover {
     -fx-text-fill: white;
+    -fx-cursor: HAND;
 }
 
 .active-page-button {
@@ -28,10 +29,12 @@
 
 .forward-button:hover {
     -fx-graphic: url("/assets/forward_focused.png");
+    -fx-cursor: HAND;
 }
 
 .forward-button:disabled {
     -fx-graphic: url("/assets/forward_disabled.png");
+    -fx-cursor: DEFAULT;
 }
 
 .back-button {
@@ -41,10 +44,12 @@
 
 .back-button:hover {
     -fx-graphic: url("/assets/back_focused.png");
+    -fx-cursor: HAND;
 }
 
 .back-button:disabled {
     -fx-graphic: url("/assets/back_disabled.png");
+    -fx-cursor: DEFAULT;
 }
 
 .nav-bar {

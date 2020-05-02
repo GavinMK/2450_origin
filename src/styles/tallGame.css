@@ -53,6 +53,10 @@
     -fx-text-fill: white;
 }
 
-.root {
+.tall-game {
     box-color: black;
+}
+
+.tall-game:hover {
+    -fx-cursor: HAND;
 }

@@ -114,6 +114,7 @@ public class Search extends VBox {
     private void initSearchBox() {
         searchIcon = createSearchIcon();
         searchField = createSearchField();
+        searchField.setFocusTraversable(false);
         clearIcon = createClearIcon();
         searchBox = new HBox();
         searchBox.getStyleClass().add("search-box");

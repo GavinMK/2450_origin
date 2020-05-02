@@ -41,6 +41,7 @@
 .show-button:hover {
     -fx-font-weight: bold;
     -fx-text-fill: orange;
+    -fx-cursor: HAND;
 }
 
 .sales-button {
@@ -55,6 +56,7 @@
 .sales-button:hover {
     -fx-font-weight: bold;
     -fx-text-fill: orange;
+    -fx-cursor: HAND;
 }
 
 .sale-info {
@@ -132,6 +134,7 @@
 .no-match-button:hover {
     -fx-font-weight: bold;
     -fx-text-fill: orange;
+    -fx-cursor: HAND;
 }
 
 .sort-list {

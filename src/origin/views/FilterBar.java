@@ -32,6 +32,8 @@ public class FilterBar extends HBox {
     public static final String SORT_BY_FIELD = "Sort By";
     public static final String GENRE_FIELD = "Genre";
     public static final String FILTER_FIELD = "Filter";
+    public static final double DROP_BUTTON_W = 150.0;
+    public static final double DROP_BUTTON_SPACING = 315.0;
 
     private GameCollection gameCollection;
 
@@ -117,12 +119,13 @@ public class FilterBar extends HBox {
         if (!listOnly) {
             sortByDropButton.setExtra("Clear");
         }
-        sortByDropButton.setMinWidth(150.0);
+        sortByDropButton.setMinWidth(DROP_BUTTON_W);
         genreDropButton = new DropDownButton("Genres", GENRES, SelectionMode.MULTIPLE);
         genreDropButton.getStyleClass().addAll("filter-button", "filter-button-divide");
-        genreDropButton.setMinWidth(150.0);
+        genreDropButton.setMinWidth(DROP_BUTTON_W);
         filterDropButton = new DropDownButton("Filters", FILTERS, SelectionMode.MULTIPLE);
         filterDropButton.getStyleClass().add("filter-button");
+        filterDropButton.setMinWidth(DROP_BUTTON_W);
         Runnable onHide = () -> {
             this.pushState(SORT_BY_FIELD);
             if (hideListener != null) {
@@ -174,8 +177,8 @@ public class FilterBar extends HBox {
             }
             Region region = new Region();
             buttonWrapper.getChildren().addAll(dropButtonList.get(i), region);
-            buttonWrapper.setMaxWidth(220.0);
-            buttonWrapper.setMinWidth(220.0);
+            buttonWrapper.setMaxWidth(DROP_BUTTON_SPACING);
+            buttonWrapper.setMinWidth(DROP_BUTTON_SPACING);
             this.getChildren().add(buttonWrapper);
         }
     }
