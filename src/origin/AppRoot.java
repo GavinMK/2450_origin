@@ -31,6 +31,7 @@ public class AppRoot extends Application {
     private VBox body;
     private BorderPane borderPane;
     private GameCollection masterCollection;
+    private KeyManager keyManager;
     public static final String STORE_PAGE_NAME = "Store";
     public static final String LIBRARY_PAGE_NAME = "Library";
     public static final String ACCESS_PAGE_NAME = "Access";
@@ -42,12 +43,12 @@ public class AppRoot extends Application {
 
     private HashMap<String, Node> createPages() {
         return new HashMap<>() {{
-            put(STORE_PAGE_NAME, new Store(masterCollection, routeState));
+            put(STORE_PAGE_NAME, new Store(masterCollection, routeState, keyManager));
             put(LIBRARY_PAGE_NAME, new Library());
             put(ACCESS_PAGE_NAME, new Access());
             put(PROFILE_PAGE_NAME, new Profile());
             put(GAME_PAGE_NAME, new GamePage(routeState));
-            put(SEARCH_PAGE_NAME, new SearchPage(masterCollection, routeState));
+            put(SEARCH_PAGE_NAME, new SearchPage(masterCollection, routeState, keyManager));
         }};
     }
 
@@ -69,11 +70,12 @@ public class AppRoot extends Application {
                     add(new Pair<>("page", ACCESS_PAGE_NAME));
                 }});
             }));
-        }}, routeState);
+        }}, routeState, keyManager);
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) {
+        keyManager = new KeyManager();
         try {
             File gamesFile = new File("src/assets/games.csv");
             masterCollection = new GameCollection(gamesFile);
@@ -116,7 +118,11 @@ public class AppRoot extends Application {
         });
 
         primaryStage.initStyle(StageStyle.UNDECORATED);
-        primaryStage.setScene(new Scene(borderPane, UI_WIDTH, UI_HEIGHT));
+        Scene scene = new Scene(borderPane, UI_WIDTH, UI_HEIGHT);
+        primaryStage.setScene(scene);
+        scene.setOnKeyPressed((evt) -> {
+            keyManager.trigger(evt.getCode());
+        });
 
         primaryStage.show();
     }

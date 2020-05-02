@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
@@ -13,11 +14,13 @@ import origin.model.GameCollection;
 import origin.utils.RouteState;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SearchPage extends BorderPane {
     private GameCollection masterCollection;
     private GameCollection searchCollection;
     private RouteState routeState;
+    private KeyManager keyManager;
 
     private Button storeButton;
     private Search searchBar;
@@ -32,7 +35,9 @@ public class SearchPage extends BorderPane {
     private VBox body;
     private ScrollPane gameScrollPane;
     private FilterBar filterBar;
+    private String keyManagerSubID = null;
     private boolean showingSortList = true;
+    private static final int NUM_GAMES_SCROLL = 4;
 
     private Button createStoreButton() {
         Button button = new Button("Back to Store");
@@ -96,9 +101,10 @@ public class SearchPage extends BorderPane {
         noMatchesBox.getChildren().addAll(noMatchText, noMatchButton);
     }
 
-    public SearchPage(GameCollection masterCollection, RouteState routeState) {
+    public SearchPage(GameCollection masterCollection, RouteState routeState, KeyManager keyManager) {
         this.masterCollection = masterCollection;
         this.routeState = routeState;
+        this.keyManager = keyManager;
 
         this.getStylesheets().add("/styles/searchPage.css");
 
@@ -145,6 +151,7 @@ public class SearchPage extends BorderPane {
                 }
                 GameCollection gameCollection = (GameCollection)state.get("gameCollection");
                 if (gameCollection != searchCollection) {
+                    gameScrollPane.setVvalue(0.0);
                     searchCollection = gameCollection;
                     verticalGameList.setGames(searchCollection.games);
                     filterBar.setGameCollection(searchCollection);
@@ -165,6 +172,31 @@ public class SearchPage extends BorderPane {
                 } else {
                     searchBar.setSearch("");
                 }
+                if (keyManagerSubID == null) {
+                    keyManagerSubID = keyManager.addListener(Arrays.asList(KeyCode.CLOSE_BRACKET, KeyCode.OPEN_BRACKET), (keyCode -> {
+                        if (verticalGameList.getChildren().size() > 0) {
+                            int scrollPixel = (int) (gameScrollPane.getVvalue() * (verticalGameList.getHeight() - gameScrollPane.getHeight()));
+                            if (keyCode == KeyCode.OPEN_BRACKET) {
+                                int gameNum = (int) Math.ceil(scrollPixel / (verticalGameList.getHeight() / verticalGameList.getChildren().size()));
+                                if (gameNum % NUM_GAMES_SCROLL != 0) {
+                                    gameNum = (gameNum / NUM_GAMES_SCROLL) * NUM_GAMES_SCROLL;
+                                } else {
+                                    gameNum -= NUM_GAMES_SCROLL;
+                                }
+                                int gamePixel = (int) (gameNum * (verticalGameList.getHeight() / verticalGameList.getChildren().size()));
+                                gameScrollPane.setVvalue((gamePixel / (verticalGameList.getHeight() - gameScrollPane.getHeight())));
+                            } else if (keyCode == KeyCode.CLOSE_BRACKET) {
+                                int gameNum = (int) Math.ceil(scrollPixel / (verticalGameList.getHeight() / verticalGameList.getChildren().size()));
+                                gameNum = (gameNum / NUM_GAMES_SCROLL) * NUM_GAMES_SCROLL + NUM_GAMES_SCROLL;
+                                int gamePixel = (int) (gameNum * (verticalGameList.getHeight() / verticalGameList.getChildren().size()));
+                                gameScrollPane.setVvalue((gamePixel / (verticalGameList.getHeight() - gameScrollPane.getHeight())));
+                            }
+                        }
+                    }));
+                }
+            } else {
+                keyManager.removeListener(keyManagerSubID);
+                keyManagerSubID = null;
             }
         });
     }

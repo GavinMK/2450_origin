@@ -2,15 +2,15 @@ package origin.views;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.util.Pair;
+import origin.AppRoot;
 import origin.utils.GuiHelper;
 import origin.utils.RouteState;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /*
     UI to traverse routeState, including arrows and pages
@@ -26,6 +26,7 @@ public class NavBar extends HBox {
     private Button profileButton;
     private HBox leftBox;
     private HBox rightBox;
+    private boolean altHeld = false;
 
     private Button createBackButton() {
         Button button = new Button();
@@ -83,7 +84,7 @@ public class NavBar extends HBox {
         return button;
     }
 
-    public NavBar(List<Pair<String, Runnable>> pages, RouteState routeState) {
+    public NavBar(List<Pair<String, Runnable>> pages, RouteState routeState, KeyManager keyManager) {
         super();
         this.routeState = routeState;
 
@@ -125,6 +126,36 @@ public class NavBar extends HBox {
                     }
                     activePageName = pageName;
                 }
+            }
+        });
+        keyManager.addListener(Arrays.asList(KeyCode.LEFT, KeyCode.RIGHT, KeyCode.ALT), keyCode -> {
+            if (keyCode == KeyCode.ALT) {
+                altHeld = true;
+            } else if (keyCode == KeyCode.LEFT && altHeld) {
+                try {
+                    if (routeState.hasPrevState()) {
+                        routeState.toPrevState();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (keyCode == KeyCode.RIGHT && altHeld) {
+                try {
+                    if (routeState.hasNextState()) {
+                        routeState.toNextState();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        sceneProperty().addListener((obj, prevScene, scene) -> {
+            if (scene != null) {
+                scene.setOnKeyReleased(e -> {
+                    if (e.getCode() == KeyCode.ALT) {
+                        altHeld = false;
+                    }
+                });
             }
         });
     }

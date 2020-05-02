@@ -3,6 +3,7 @@ package origin.views;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,6 +25,7 @@ import java.util.function.Function;
 public class Store extends BorderPane {
     private GameCollection masterCollection;
     private RouteState routeState;
+    private KeyManager keyManager;
     private ScrollPane scroller;
     private VBox body;
     private VBox allLists;
@@ -41,6 +43,9 @@ public class Store extends BorderPane {
     private VBox listBody;
     private BorderPane listPane;
     private VBox noMatchesBox;
+    private String keyManagerSubID = null;
+    private static final int NUM_GAMES_SCROLL = 4;
+    private static final double SCROLL_BEHAVIOR_MARGIN = 20.0;
 
     private boolean showingSortList = false;
     private boolean showingHorzList = false;
@@ -205,14 +210,14 @@ public class Store extends BorderPane {
         noMatchesBox.getChildren().addAll(noMatchText, unfilterButton);
     }
 
-    public Store(GameCollection masterCollection, RouteState routeState) {
+    public Store(GameCollection masterCollection, RouteState routeState, KeyManager keyManager) {
         super();
         this.masterCollection = masterCollection;
         this.routeState = routeState;
+        this.keyManager = keyManager;
 
         this.getStylesheets().addAll("/styles/store.css");
         searchBar = new Search(masterCollection, routeState);
-        searchBar = new Search(masterCollection, this.routeState);
         searchHBox = new HBox();
         searchHBox.getStyleClass().add("search-h-box");
         searchHBox.setAlignment(Pos.CENTER_RIGHT);
@@ -244,5 +249,54 @@ public class Store extends BorderPane {
         //BorderPane is used to set visibility order while maintaining positioning: make sure you set center first, then top
         this.setCenter(scroller);
         this.setTop(searchHBox);
+
+        routeState.subscribe((HashMap<String, Object> state) -> {
+            String pageName = (String)state.get("page");
+            if (pageName == AppRoot.STORE_PAGE_NAME) {
+                if (keyManagerSubID == null) {
+                    keyManagerSubID = keyManager.addListener(Arrays.asList(KeyCode.PAGE_UP, KeyCode.PAGE_DOWN, KeyCode.CLOSE_BRACKET, KeyCode.OPEN_BRACKET), (keyCode -> {
+                        if (!showingSortList) {
+                            if (keyCode == KeyCode.OPEN_BRACKET) {
+                                scroller.setVvalue(scroller.getVmin());
+                            }
+                            if (keyCode == KeyCode.CLOSE_BRACKET) {
+                                scroller.setVvalue(scroller.getVmax());
+                            }
+                        } else {
+                            double scrollContentHeight = body.getHeight();
+                            double aboveScrollH = sales.getHeight() + ((Region) listPane.getTop()).getHeight();
+
+                            int scrollPixel = (int) (scroller.getVvalue() * (scrollContentHeight - scroller.getHeight()) - aboveScrollH);
+                            if (keyCode == KeyCode.OPEN_BRACKET) {
+                                if (scrollPixel <= SCROLL_BEHAVIOR_MARGIN) {
+                                    scroller.setVvalue(0.0);
+                                } else {
+                                    int gameNum = (int) Math.ceil(scrollPixel / (sortedGameList.getHeight() / sortedGameList.getChildren().size()));
+                                    if (gameNum % NUM_GAMES_SCROLL != 0) {
+                                        gameNum = (gameNum / NUM_GAMES_SCROLL) * NUM_GAMES_SCROLL;
+                                    } else {
+                                        gameNum -= NUM_GAMES_SCROLL;
+                                    }
+                                    int gamePixel = (int) (gameNum * (sortedGameList.getHeight() / sortedGameList.getChildren().size()));
+                                    scroller.setVvalue(((gamePixel + aboveScrollH) / (scrollContentHeight - scroller.getHeight())));
+                                }
+                            } else if (keyCode == KeyCode.CLOSE_BRACKET) {
+                                if (scrollPixel < -SCROLL_BEHAVIOR_MARGIN) {
+                                    scroller.setVvalue(aboveScrollH / (scrollContentHeight - scroller.getHeight()));
+                                } else {
+                                    int gameNum = (int) Math.ceil(scrollPixel / (sortedGameList.getHeight() / sortedGameList.getChildren().size()));
+                                    gameNum = (gameNum / NUM_GAMES_SCROLL) * NUM_GAMES_SCROLL + NUM_GAMES_SCROLL;
+                                    int gamePixel = (int) (gameNum * (sortedGameList.getHeight() / sortedGameList.getChildren().size()));
+                                    scroller.setVvalue((gamePixel + aboveScrollH) / (scrollContentHeight - scroller.getHeight()));
+                                }
+                            }
+                        }
+                    }));
+                }
+            } else {
+                keyManager.removeListener(keyManagerSubID);
+                keyManagerSubID = null;
+            }
+        });
     }
 }
