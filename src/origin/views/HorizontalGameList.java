@@ -38,6 +38,7 @@ public class HorizontalGameList extends HBox {
     private Button createLeftButton() {
         Button button = new Button();
         button.getStyleClass().addAll("left-button", "scroll-button");
+        button.setFocusTraversable(false);
         button.setOnAction((evt) -> {
             if(this.leftIterator > 0) {
                 this.negativeShiftVisible();
@@ -58,6 +59,7 @@ public class HorizontalGameList extends HBox {
     private Button createRightButton() {
         Button button = new Button();
         button.getStyleClass().addAll("right-button", "scroll-button");
+        button.setFocusTraversable(false);
         button.setOnAction((evt) -> {
             if (this.leftIterator == 0 && this.specialFrame != null && this.isSpecialFrame) {
                 this.disableSpecialFrame();
