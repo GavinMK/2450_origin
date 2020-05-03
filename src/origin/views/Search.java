@@ -39,7 +39,7 @@ public class Search extends VBox {
     private DropDownList dropDownList;
 
     private void gotoGamePage(GameData gameData) {
-        routeState.pushState(new ArrayList<>() {{
+        routeState.pushState(new ArrayList<Pair<String, Object>>() {{
             add(new Pair<>("page", AppRoot.GAME_PAGE_NAME));
             add(new Pair<>("gameData", gameData));
         }});
@@ -47,7 +47,7 @@ public class Search extends VBox {
 
     private void gotoSearchPage() {
         if (searchField.getText().length() > 0) {
-            routeState.pushState(new ArrayList<>() {{
+            routeState.pushState(new ArrayList<Pair<String, Object>>() {{
                 add(new Pair<>("page", AppRoot.SEARCH_PAGE_NAME));
                 add(new Pair<>("title", "Results for \"" + searchField.getText() + "\""));
                 add(new Pair<>("search", searchField.getText()));
@@ -164,7 +164,7 @@ public class Search extends VBox {
                 if (numItems > 0) {
                     dropDownList.setItems(titles);
                 } else {
-                    dropDownList.setItems(new ArrayList<>() {{
+                    dropDownList.setItems(new ArrayList<String>() {{
                         add("Search \"" + text + "\"");
                     }});
                 }

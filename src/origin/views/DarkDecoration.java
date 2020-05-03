@@ -33,8 +33,8 @@ public class DarkDecoration extends HBox {
     private boolean fullscreen = false;
 
     //Specifies menu names and their items
-    private static final ArrayList<Pair<String, ArrayList<String>>> MENU_BAR_CONTENT = new ArrayList<>() {{
-        add(new Pair<>("Origin", new ArrayList<>() {{
+    private static final ArrayList<Pair<String, ArrayList<String>>> MENU_BAR_CONTENT = new ArrayList<Pair<String, ArrayList<String>>>() {{
+        add(new Pair<>("Origin", new ArrayList<String>() {{
             add("Settings");
             add("Account & Billing");
             add("Order History");
@@ -44,16 +44,16 @@ public class DarkDecoration extends HBox {
             add("Sign Out");
             add("Exit");
         }}));
-        add(new Pair<>("View", new ArrayList<>() {{
+        add(new Pair<>("View", new ArrayList<String>() {{
             add("Store");
             add("Library");
             add("Friends List");
         }}));
-        add(new Pair<>("Friends", new ArrayList<>() {{
+        add(new Pair<>("Friends", new ArrayList<String>() {{
             add("View Friends List");
             add("Add a Friend");
         }}));
-        add(new Pair<>("Games", new ArrayList<>() {{
+        add(new Pair<>("Games", new ArrayList<String>() {{
             add("View Games");
             add("Add Non-Origin Game");
             add("Redeem A Code");

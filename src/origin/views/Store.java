@@ -61,7 +61,7 @@ public class Store extends BorderPane {
         Button showButton = new Button(buttonText);
         showButton.getStyleClass().add(buttonClass);
         showButton.setOnAction((evt) -> {
-            this.routeState.pushState(new ArrayList<>() {{
+            this.routeState.pushState(new ArrayList<Pair<String, Object>>() {{
                 add(new Pair<>("page", AppRoot.SEARCH_PAGE_NAME));
                 add(new Pair<>("search", title));
                 add(new Pair<>("gameCollection", collection));

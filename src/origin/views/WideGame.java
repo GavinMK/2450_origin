@@ -110,7 +110,7 @@ public class WideGame extends HBox {
         initInfoPane();
 
         this.setOnMouseClicked((evt) -> {
-            routeState.pushState(new ArrayList<>() {{
+            routeState.pushState(new ArrayList<Pair<String, Object>>() {{
                 add(new Pair<>("page", AppRoot.GAME_PAGE_NAME));
                 add(new Pair<>("gameData", game));
             }});

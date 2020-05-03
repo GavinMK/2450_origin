@@ -40,7 +40,7 @@ public class AppRoot extends Application {
     public static final int UI_HEIGHT = 950;
 
     private HashMap<String, Node> createPages() {
-        return new HashMap<>() {{
+        return new HashMap<String, Node>() {{
             put(STORE_PAGE_NAME, new Store(masterCollection, routeState, keyManager));
             put(LIBRARY_PAGE_NAME, new Library());
             put(ACCESS_PAGE_NAME, new Access());
@@ -51,20 +51,20 @@ public class AppRoot extends Application {
     }
 
     private NavBar createNavBar() {
-        return new NavBar(new ArrayList<>() {{
+        return new NavBar(new ArrayList<Pair<String, Runnable>>() {{
             add(new Pair<>(STORE_PAGE_NAME, () -> {
-                routeState.pushState(new ArrayList<>() {{
+                routeState.pushState(new ArrayList<Pair<String, Object>>() {{
                     add(new Pair<>("page", STORE_PAGE_NAME));
                     addAll(FilterBar.GetClearState(AppRoot.STORE_PAGE_NAME));
                 }});
             }));
             add(new Pair<>(LIBRARY_PAGE_NAME, () -> {
-                routeState.pushState(new ArrayList<>() {{
+                routeState.pushState(new ArrayList<Pair<String, Object>>() {{
                     add(new Pair<>("page", LIBRARY_PAGE_NAME));
                 }});
             }));
-            add(new Pair<String, Runnable>(ACCESS_PAGE_NAME, () -> {
-                routeState.pushState(new ArrayList<>() {{
+            add(new Pair<>(ACCESS_PAGE_NAME, () -> {
+                routeState.pushState(new ArrayList<Pair<String, Object>>() {{
                     add(new Pair<>("page", ACCESS_PAGE_NAME));
                 }});
             }));
@@ -83,7 +83,7 @@ public class AppRoot extends Application {
             e.printStackTrace();
         }
         //Set application to initial state
-        routeState = new RouteState(new ArrayList<>() {{
+        routeState = new RouteState(new ArrayList<Pair<String, Object>>() {{
             add(new Pair<>("page", "Store"));
         }});
 

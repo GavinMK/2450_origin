@@ -49,7 +49,7 @@ public class DropDownList extends VBox {
             selectedItem = item;
         }
         if (changeListener != null) {
-            changeListener.accept(new ArrayList<>() {{
+            changeListener.accept(new ArrayList<String>() {{
                 add(item);
             }});
         }
@@ -159,7 +159,7 @@ public class DropDownList extends VBox {
 
     public List<String> getSelectedItems() {
         if (selectionMode == SelectionMode.SINGLE && selectedItem != null) {
-            return new ArrayList<>(){{
+            return new ArrayList<String>(){{
                 add(selectedItem);
             }};
         } else if (selectionMode == SelectionMode.MULTIPLE) {

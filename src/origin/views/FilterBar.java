@@ -18,7 +18,7 @@ import java.util.function.Function;
  */
 public class FilterBar extends HBox {
     public static ArrayList<Pair<String, Object>> GetClearState(String routePrefix) {
-        return new ArrayList<>() {{
+        return new ArrayList<Pair<String, Object>>() {{
             add(new Pair<>(routePrefix + "SortBy", null));
             add(new Pair<>(routePrefix + "ActiveGenres", null));
             add(new Pair<>(routePrefix + "ActiveFilters", null));
@@ -53,18 +53,19 @@ public class FilterBar extends HBox {
     private RouteState routeState;
     private boolean disablePush = false;
 
-    private static HashMap<String, Function<GameCollection, List<GameData>>> SORT_BYS = new HashMap<>() {{
-        put(MOST_POPULAR, (collection) -> collection.sortDescendingPopular());
-        put(MOST_RECENT, (collection) -> collection.sortRecent());
-        put(LOWEST_PRICE, (collection) -> collection.sortPrice());
-        put(HIGHEST_PRICE, (collection) -> {
-            List<GameData> games = collection.sortPrice();
-            Collections.reverse(games);
-            return games;
-        });
+    private static HashMap<String, Function<GameCollection, List<GameData>>> SORT_BYS =
+        new HashMap<String, Function<GameCollection, List<GameData>>>() {{
+            put(MOST_POPULAR, (collection) -> collection.sortDescendingPopular());
+            put(MOST_RECENT, (collection) -> collection.sortRecent());
+            put(LOWEST_PRICE, (collection) -> collection.sortPrice());
+            put(HIGHEST_PRICE, (collection) -> {
+                List<GameData> games = collection.sortPrice();
+                Collections.reverse(games);
+                return games;
+            });
     }};
 
-    private static List<String> GENRES = new ArrayList<>() {{
+    private static List<String> GENRES = new ArrayList<String>() {{
         add("Action");
         add("Adventure");
         add("Racing");
@@ -72,7 +73,7 @@ public class FilterBar extends HBox {
         add("Strategy");
     }};
 
-    private static List<String> FILTERS = new ArrayList<>() {{
+    private static List<String> FILTERS = new ArrayList<String>() {{
         add("Rated E");
         add("Rated T");
         add("Rated M");
@@ -94,7 +95,7 @@ public class FilterBar extends HBox {
 
     private void pushState(String changedField) {
         if (this.routeState != null && !this.disablePush) {
-            routeState.pushState(new ArrayList<>() {{
+            routeState.pushState(new ArrayList<Pair<String, Object>>() {{
                 add(new Pair<>(routePrefix + "ActiveGenres", (activeGenres != null) ? new ArrayList<>(activeGenres) : null));
                 add(new Pair<>(routePrefix + "ActiveFilters", (activeFilters != null) ? new ArrayList<>(activeFilters) : null));
                 add(new Pair<>(routePrefix + "SortBy", sortingBy));
@@ -205,7 +206,7 @@ public class FilterBar extends HBox {
                 } else {
                     activeFilters = null;
                 }
-                this.sortByDropButton.setSelectedItems((sortingBy != null)? new ArrayList<>(){{ add(sortingBy); }}: null);
+                this.sortByDropButton.setSelectedItems((sortingBy != null)? new ArrayList<String>(){{ add(sortingBy); }}: null);
                 this.genreDropButton.setSelectedItems(activeGenres);
                 this.filterDropButton.setSelectedItems(activeFilters);
                 sendGamesToListeners(null);
@@ -228,7 +229,7 @@ public class FilterBar extends HBox {
 
     public void setSortBy(String sortBy) {
         this.sortingBy = sortBy;
-        this.sortByDropButton.setSelectedItems((sortingBy != null)? new ArrayList<>(){{ add(sortingBy); }}: null);
+        this.sortByDropButton.setSelectedItems((sortingBy != null)? new ArrayList<String>(){{ add(sortingBy); }}: null);
         pushState(SORT_BY_FIELD);
     }
 

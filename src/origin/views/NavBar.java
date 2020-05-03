@@ -76,7 +76,7 @@ public class NavBar extends HBox {
         button.getStyleClass().addAll("profile-button", "nav-button");
         button.setOnAction((evt) -> {
             try {
-                routeState.pushState(new ArrayList<>() {{
+                routeState.pushState(new ArrayList<Pair<String, Object>>() {{
                     add(new Pair<>("page", "profile"));
                 }});
             } catch (Exception e) {

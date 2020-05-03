@@ -45,7 +45,7 @@ public class SearchPage extends BorderPane {
         Button button = new Button("Back to Store");
         button.getStyleClass().add("store-button");
         button.setOnAction((evt) -> {
-            routeState.pushState(new ArrayList<>() {{
+            routeState.pushState(new ArrayList<Pair<String, Object>>() {{
                 add(new Pair<>("page", AppRoot.STORE_PAGE_NAME));
             }});
         });
@@ -96,7 +96,7 @@ public class SearchPage extends BorderPane {
         Button noMatchButton = new Button("Back To Store");
         noMatchButton.getStyleClass().add("no-match-button");
         noMatchButton.setOnAction((evt) -> {
-            routeState.pushState(new ArrayList<>() {{
+            routeState.pushState(new ArrayList<Pair<String, Object>>() {{
                 add(new Pair<>("page", AppRoot.STORE_PAGE_NAME));
             }});
         });
