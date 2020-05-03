@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /*
-    An autocompleted search-bar for games
+    A search bar for games with autocompletion
  */
 public class Search extends VBox {
     private static final int ITEM_LIMIT = 6;

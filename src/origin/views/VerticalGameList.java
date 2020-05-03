@@ -1,14 +1,14 @@
 package origin.views;
 
-import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import origin.model.GameData;
 import origin.utils.RouteState;
 
 import java.util.List;
 
+/*
+    Simple wrapper for a list of games
+ */
 public class VerticalGameList extends VBox {
     private RouteState routeState;
 

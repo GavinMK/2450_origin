@@ -5,17 +5,17 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.util.Pair;
-import origin.AppRoot;
 import origin.model.GameCollection;
 import origin.model.GameData;
 import origin.utils.RouteState;
 
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.logging.Filter;
 
+/*
+    A view horizontally aligning "Sort By", "Genres", and "Filters" buttons to get a subset of games
+ */
 public class FilterBar extends HBox {
     public static ArrayList<Pair<String, Object>> GetClearState(String routePrefix) {
         return new ArrayList<>() {{
@@ -188,6 +188,7 @@ public class FilterBar extends HBox {
         this.routePrefix = pageName;
         routeState.subscribe((state) -> {
             if (state.get("page") == pageName) {
+                //Prevent infinite loop of routeState pushes
                 disablePush = true;
                 if (state.containsKey(routePrefix + "SortBy") && state.get(routePrefix + "SortBy") != null) {
                     sortingBy = (String)state.get(routePrefix + "SortBy");
@@ -209,7 +210,6 @@ public class FilterBar extends HBox {
                 this.filterDropButton.setSelectedItems(activeFilters);
                 sendGamesToListeners(null);
                 disablePush = false;
-                //updateLists(masterCollection.getMatchingGames(activeGenres, activeFilters), sortingBy);
             }
         });
     }

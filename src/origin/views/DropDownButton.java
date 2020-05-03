@@ -11,13 +11,16 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import origin.model.GameData;
 import origin.utils.GuiHelper;
 
 import java.io.File;
 import java.util.List;
 import java.util.function.Consumer;
 
+/*
+    A button , when pressed, shows a list where one or multiple options can be selected
+    Creating a custom dropdown gives us more control over the styling
+ */
 public class DropDownButton extends VBox {
     private Consumer<List<String>> selectListener = null;
     private Runnable hideListener = null;

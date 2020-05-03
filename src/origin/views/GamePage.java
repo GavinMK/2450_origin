@@ -6,14 +6,16 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import origin.AppRoot;
 import origin.model.GameData;
 import origin.utils.RouteState;
+
 import java.util.HashMap;
 
-//TODO: This whole thing
+/*
+    A page where games can be viewed and purchased
+ */
 public class GamePage extends VBox {
     private GameData game;
     private RouteState routeState;

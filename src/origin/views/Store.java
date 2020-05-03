@@ -1,27 +1,28 @@
 package origin.views;
 
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 import origin.AppRoot;
 import origin.model.GameCollection;
 import origin.model.GameData;
 import origin.utils.RouteState;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
-//TODO: This whole thing
+/*
+    A page showing game sales, filterable lists of the most popular and most recent games or a vertical list of games
+ */
 public class Store extends BorderPane {
     private GameCollection masterCollection;
     private RouteState routeState;
@@ -250,6 +251,7 @@ public class Store extends BorderPane {
         this.setCenter(scroller);
         this.setTop(searchHBox);
 
+        //Controls the pagination of the scroll bar which uses a crazy measurement system
         routeState.subscribe((HashMap<String, Object> state) -> {
             String pageName = (String)state.get("page");
             if (pageName == AppRoot.STORE_PAGE_NAME) {
@@ -263,6 +265,7 @@ public class Store extends BorderPane {
                                 scroller.setVvalue(scroller.getVmax());
                             }
                         } else {
+                            //Ensures pages are consistent and the top of the page shows a complete game
                             double scrollContentHeight = body.getHeight();
                             double aboveScrollH = sales.getHeight() + ((Region) listPane.getTop()).getHeight();
 

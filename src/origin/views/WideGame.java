@@ -2,14 +2,10 @@ package origin.views;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.util.Pair;
 import origin.AppRoot;
 import origin.model.GameData;
@@ -22,6 +18,9 @@ import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
+/*
+    Wide selectable box of game information shown in the vertical game list
+ */
 public class WideGame extends HBox {
     private GameData game;
     private ImageView gameImage;
@@ -75,13 +74,6 @@ public class WideGame extends HBox {
         Label owned = new Label("Owned");
         owned.getStyleClass().add("game-owned");
         return owned;
-    }
-
-    private Button createButton() {
-        Button button = new Button();
-        button.getStyleClass().add("game-button");
-
-        return button;
     }
 
     public void initInfoPane() {

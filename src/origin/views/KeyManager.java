@@ -2,9 +2,16 @@ package origin.views;
 
 import javafx.scene.input.KeyCode;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 
+/*
+    JavaFX scenes only allow one function to listen for key events, this sends key events to subscribers to remedy
+    that problem
+ */
 public class KeyManager {
     private HashMap<KeyCode, HashMap<String, Consumer>> listeners = new HashMap<>();
 

@@ -1,18 +1,13 @@
 package origin.views;
 
-import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Polygon;
-import origin.AppRoot;
-import origin.utils.GuiHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +17,7 @@ import java.util.function.Consumer;
 
 /*
     DropDown list of checkboxes (if multi-select) or buttons (if single-select)
- */
+*/
 public class DropDownList extends VBox {
     private SelectionMode selectionMode;
     private boolean persistentSelection;

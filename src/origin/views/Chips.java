@@ -6,6 +6,9 @@ import javafx.scene.layout.GridPane;
 
 import java.util.List;
 
+/*
+    Displays a grid of non-interactable chips
+ */
 public class Chips extends GridPane {
     private int MAX_CHIP_ROWS = 3;
     private int MAX_CHIP_COLS = 3;

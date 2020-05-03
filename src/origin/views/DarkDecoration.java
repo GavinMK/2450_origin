@@ -2,9 +2,13 @@ package origin.views;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -92,6 +96,7 @@ public class DarkDecoration extends HBox {
     private Button createMaximizeButton() {
         Button button = new Button();
         button.getStyleClass().addAll("maximize-button", "toolbar-button");
+        /*
         button.setOnAction((evt) -> {
             Stage stage = (Stage)((Node)evt.getSource()).getScene().getWindow();
             if (!fullscreen) {
@@ -100,6 +105,7 @@ public class DarkDecoration extends HBox {
                 goWindowed(stage);
             }
         });
+        */
         return button;
     }
 
